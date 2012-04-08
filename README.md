@@ -13,7 +13,7 @@ For example:
 
 
 TODO:
-- Full set of unit tests
-- Implement MAP (so that it can be converted back to JSON by JSON.stringify()
+* Full set of unit tests
+* Implement MAP (so that it can be converted back to JSON by JSON.stringify()
 
 
