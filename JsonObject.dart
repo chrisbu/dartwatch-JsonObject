@@ -3,7 +3,7 @@
 
 ///JsonObject allows .property name access to JSON by using
 ///noSuchMethod
-class JsonObject  { //todo: implement map
+class JsonObject extends Object { //todo: implement map
   var _jsonString;
   Map _objectData;
   
@@ -74,7 +74,7 @@ class JsonObject  { //todo: implement map
     }
     
     //if we get here, then we've not found it - throw.
-    throw new NoSuchMethodException(this,function_name,args);
+    super.noSuchMethod(function_name, args);
   }
   
 }

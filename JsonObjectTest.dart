@@ -36,7 +36,7 @@ void main() {
 }
 """;
   
-  JsonObject o = new JsonObject.fromJsonString(jsonString);
+  var  o = new JsonObject.fromJsonString(jsonString);
   //basic access
   print(o.name);
   print(o.languages[0]);
@@ -60,7 +60,29 @@ void main() {
   o.handles.googlePlus.name="+ChrisB";
   print(o.handles.googlePlus.name);
   
+  jsonString = """
+      {
+        "addresses" : [
+          { "address": {
+              "line1": "1 the street",
+              "postcode": "ab12 3de"
+            }
+          },
+          { "address": {
+              "line1": "1 the street",
+              "postcode": "ab12 3de"
+            }
+          }
+        ]
+      }
+      """;
+
+
+  var person = new JsonObject.fromJsonString(jsonString);
+  print(person.addresses[0].address.line1);
   
+  //finally, this should throw, as it's not found:
+  person.wibble;
 }
 
 
