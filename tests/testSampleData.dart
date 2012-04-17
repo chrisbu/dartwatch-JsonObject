@@ -58,5 +58,10 @@ bool testSampleData() {
       //try an update
       o.handles.googlePlus.name="+ChrisB";
       Expect.stringEquals("+ChrisB",o.handles.googlePlus.name);
+      
+      for (JsonObject o in o.books) {
+        print(o.chapters);  
+      }
+      
        
 }

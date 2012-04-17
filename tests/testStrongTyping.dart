@@ -2,16 +2,15 @@
 //Define some interfaces
 //that we want our JSON structure to look like
 
-interface Person //extends JsonObject - not yet implemented in the VM 
-{
+interface Person extends JsonObject {
    AddressList addresses; 
 }
 
-interface AddressList extends List {
+interface AddressList extends List, JsonObject {
   Address address;
 }
 
-interface Address {
+interface Address extends JsonObject {
    String line1;
    String postcode;
 }
@@ -19,7 +18,32 @@ interface Address {
 
 testStrongTyping() {
   print("testStrongTyping");
-  //Create the JSON which looks like our interface structure
+  var jsonString = _getStrongTypingJsonString();
+
+  //Create a new JSON object which looks like our Person
+  //A Person Interface extends the JsonObject, so no 
+  //warning is reported
+  Person person = new JsonObject.fromJsonString(jsonString);
+  //verify property access
+  Expect.stringEquals("1 the street", person.addresses[0].address.line1);
+  
+  var noSuchMethodException = null;
+  try {
+    //this should throw an exception
+    //as it doesn't exist on Person
+    //and it is a valid warning
+    person.wibble;
+  }
+  catch (NoSuchMethodException ex) {
+    noSuchMethodException = ex;
+  }
+  
+  Expect.isNotNull(noSuchMethodException);
+}
+
+
+_getStrongTypingJsonString() {
+//Create the JSON which looks like our interface structure
   var jsonString = """
       {
         "addresses" : [
@@ -36,24 +60,6 @@ testStrongTyping() {
         ]
       }
       """;
-
-
-  //Create a new JSON object which looks like our Person
-  //this will get a warning until Person can 
-  //implement the JsonObject class in the VM
-  Person person = new JsonObject.fromJsonString(jsonString);
-  Expect.stringEquals("1 the street", person.addresses[0].address.line1);
-  
-  var noSuchMethodException = null;
-  try {
-    //this should throw an exception
-    //as it doesn't exist on Person
-    //and it is a valid warning
-    person.wibble;
-  }
-  catch (NoSuchMethodException ex) {
-    noSuchMethodException = ex;
-  }
-  
-  Expect.isNotNull(noSuchMethodException);
+  return jsonString;  
+}
 }

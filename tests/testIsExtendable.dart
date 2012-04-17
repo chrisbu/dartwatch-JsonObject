@@ -5,6 +5,7 @@ testIsExtendable() {
   //isExtendable is currently set to true, so 
   //we can dynamically add new items
   person.name = "Chris"; 
+  person.languages = ["Java","Dart","C#"];
   Expect.stringEquals("Chris", person.name);
   
   

@@ -24,16 +24,17 @@ It implements Map, so you can convert it back to Json using JSON.stringify():
     person.languages = ["Dart","Java"];
     var json = JSON.stringify(person);
 
-By coding against an interface, you can get a bit of stronger typing:
+By coding against an interface, you can get stronger typing.
+An interface can now extend a Class (which is also implicitly an interface) :
 
-    //interface Person implements JsonObject { //should be allowed by not in Dart VM yet
-    interface Person {  //so we have to use this instead
+    interface Person extend JsonObject { 
       String name;
       List languages;
     }
     
     //...snip
-    Person person = new JsonObject();
+    Person person = new JsonObject(); //this works without warning
+                                      //because Person extends JsonObject
     person.name = "Chris";
     person.languages = //etc...  
     //will get strongly type checked.

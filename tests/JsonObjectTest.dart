@@ -7,6 +7,7 @@
 #source("testSampleData.dart");
 #source("testJsonStringify.dart");
 #source("testIsExtendable.dart");
+#source("testExtendObject.dart");
 
 void main() {
   print("Starting tests");
