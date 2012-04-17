@@ -27,7 +27,7 @@ It implements Map, so you can convert it back to Json using JSON.stringify():
 By coding against an interface, you can get stronger typing.
 An interface can now extend a Class (which is also implicitly an interface) :
 
-    interface Person extend JsonObject { 
+    interface Person extends JsonObject { 
       String name;
       List languages;
     }
