@@ -1,5 +1,7 @@
 JsonObject for DART (http://www.dartlang.org)
 
+Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
+
 Takes a json string representation, and uses dart:json to parse it.
 From the parsed output, it converts any maps (recursively) into 
 JsonObjects, which allow use of dot notation for property access 
