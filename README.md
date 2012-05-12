@@ -1,5 +1,7 @@
 JsonObject for DART (http://www.dartlang.org)
 
+Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
+
 Takes a json string representation, and uses dart:json to parse it.
 From the parsed output, it converts any maps (recursively) into 
 JsonObjects, which allow use of dot notation for property access 
@@ -27,7 +29,7 @@ It implements Map, so you can convert it back to Json using JSON.stringify():
 By coding against an interface, you can get stronger typing.
 An interface can now extend a Class (which is also implicitly an interface) :
 
-    interface Person extend JsonObject { 
+    interface Person extends JsonObject { 
       String name;
       List languages;
     }
