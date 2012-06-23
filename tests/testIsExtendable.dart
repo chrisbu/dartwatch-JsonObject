@@ -1,14 +1,14 @@
 testIsExtendable() {
   print("testIsExtendable");
-  
+
   JsonObject person = new JsonObject();
-  //isExtendable is currently set to true, so 
+  //isExtendable is currently set to true, so
   //we can dynamically add new items
-  person.name = "Chris"; 
+  person.name = "Chris";
   person.languages = ["Java","Dart","C#"];
-  Expect.stringEquals("Chris", person.name);
-  
-  
+  expect(person.name, equals("Chris"));
+
+
   //but we can stop it being extendable, to provide a bit more checking
   person.isExtendable = false;
   UnsupportedOperationException expectedException = null;
@@ -19,6 +19,7 @@ testIsExtendable() {
     expectedException = ex;
   }
   //assert
-  Expect.isNotNull(expectedException);
-  
+  expect(expectedException != null);
+
+
 }

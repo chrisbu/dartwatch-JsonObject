@@ -3,8 +3,10 @@
 //that we want our JSON structure to look like
 
 interface Person extends JsonObject {
-   AddressList addresses; 
+   AddressList addresses;
+
 }
+
 
 interface AddressList extends List, JsonObject {
   Address address;
@@ -15,18 +17,23 @@ interface Address extends JsonObject {
    String postcode;
 }
 
-
+// this test will fail.  But it would be great if it didn't!
+// does anyone have any ideas?
 testStrongTyping() {
   print("testStrongTyping");
   var jsonString = _getStrongTypingJsonString();
 
-  //Create a new JSON object which looks like our Person
-  //A Person Interface extends the JsonObject, so no 
-  //warning is reported
-  Person person = new JsonObject.fromJsonString(jsonString);
+  // Create a new JSON object which looks like our Person
+  // A Person Interface extends the JsonObject, so no
+  // warning is reported
+
+  Person person = new JsonObject.fromJsonString(jsonString); // this will fail.
+
+
+
   //verify property access
-  Expect.stringEquals("1 the street", person.addresses[0].address.line1);
-  
+  expect(person.addresses[0].address.line1, equals("1 the street"));
+
   var noSuchMethodException = null;
   try {
     //this should throw an exception
@@ -37,8 +44,9 @@ testStrongTyping() {
   catch (NoSuchMethodException ex) {
     noSuchMethodException = ex;
   }
-  
-  Expect.isNotNull(noSuchMethodException);
+
+  expect(noSuchMethodException != null);
+
 }
 
 
@@ -60,6 +68,5 @@ _getStrongTypingJsonString() {
         ]
       }
       """;
-  return jsonString;  
-}
+  return jsonString;
 }
