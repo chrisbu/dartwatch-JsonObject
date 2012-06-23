@@ -23,7 +23,7 @@ void main() {
   });
 
   test('json stringify', () {
-    testJsonStringify();  // fails build 8942
+    testJsonStringify();  // passes build 8942
   });
 
   test('is extendable', () {
