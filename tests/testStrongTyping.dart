@@ -2,9 +2,16 @@
 //Define some interfaces
 //that we want our JSON structure to look like
 
-interface Person extends JsonObject {
+interface Person default _PersonImpl{
    AddressList addresses;
+   Person.fromString(String jsonString);
+}
 
+class _PersonImpl extends JsonObject implements Person {
+  _PersonImpl();
+  factory _PersonImpl.fromString(String jsonString) {
+    return new JsonObject.fromJsonString(jsonString, new _PersonImpl());  
+  } 
 }
 
 
@@ -21,14 +28,14 @@ interface Address extends JsonObject {
 // does anyone have any ideas?
 testStrongTyping() {
   print("testStrongTyping");
-  var jsonString = _getStrongTypingJsonString();
+  String jsonString = _getStrongTypingJsonString();
 
   // Create a new JSON object which looks like our Person
   // A Person Interface extends the JsonObject, so no
   // warning is reported
 
-  Person person = new JsonObject.fromJsonString(jsonString); // this will fail.
-
+  Person person = new Person.fromString(jsonString); // this will not fail
+  
 
 
   //verify property access
@@ -50,7 +57,7 @@ testStrongTyping() {
 }
 
 
-_getStrongTypingJsonString() {
+String _getStrongTypingJsonString() {
 //Create the JSON which looks like our interface structure
   var jsonString = """
       {
