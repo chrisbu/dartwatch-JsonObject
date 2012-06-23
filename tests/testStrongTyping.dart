@@ -28,7 +28,7 @@ interface Address extends JsonObject {
 // does anyone have any ideas?
 testStrongTyping() {
   print("testStrongTyping");
-  var jsonString = _getStrongTypingJsonString();
+  String jsonString = _getStrongTypingJsonString();
 
   // Create a new JSON object which looks like our Person
   // A Person Interface extends the JsonObject, so no
@@ -57,7 +57,7 @@ testStrongTyping() {
 }
 
 
-_getStrongTypingJsonString() {
+String _getStrongTypingJsonString() {
 //Create the JSON which looks like our interface structure
   var jsonString = """
       {
