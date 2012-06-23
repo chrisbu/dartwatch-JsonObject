@@ -2,9 +2,16 @@
 //Define some interfaces
 //that we want our JSON structure to look like
 
-interface Person extends JsonObject {
+interface Person default _PersonImpl{
    AddressList addresses;
+   Person.fromString(String jsonString);
+}
 
+class _PersonImpl extends JsonObject implements Person {
+  _PersonImpl();
+  factory _PersonImpl.fromString(String jsonString) {
+    return new JsonObject.fromJsonString(jsonString, new _PersonImpl());  
+  } 
 }
 
 
@@ -27,8 +34,8 @@ testStrongTyping() {
   // A Person Interface extends the JsonObject, so no
   // warning is reported
 
-  Person person = new JsonObject.fromJsonString(jsonString); // this will fail.
-
+  Person person = new Person.fromString(jsonString); // this will not fail
+  
 
 
   //verify property access
