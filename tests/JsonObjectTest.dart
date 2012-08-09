@@ -15,27 +15,39 @@
 
 void main() {
   test('sample data', () {
+    print(1);
     testSampleData(); // passes build 8942
   });
 
-  test('strong typing', () {
-    testStrongTyping(); // passes build 8942
+  group('strong typing', () {
+    test('new', () {
+      print(2);
+      testStrongTyping_new(); 
+    });
+    
+    test('from json string', () {
+      testStrongTyping_fromJsonString(); // passes build 8942
+    });
   });
 
   test('json stringify', () {
+    print(3);
     testJsonStringify();  // passes build 8942
   });
 
   test('is extendable', () {
+    print(4);
     testIsExtendable(); // passes build 8942
   });
 
   test('extend object', () {
+    print(5);
     testExtendObject(); // passes build 8942
   });
 
   test('toString', () {
-    testToString();
+    print(6);
+   testToString();
   });
 
 }

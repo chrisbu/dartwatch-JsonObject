@@ -2,16 +2,25 @@
 //Define some interfaces
 //that we want our JSON structure to look like
 
-interface Person default _PersonImpl{
+interface Person default _PersonImpl {
    AddressList addresses;
+   String name;
    Person.fromString(String jsonString);
+   Person();
 }
 
 class _PersonImpl extends JsonObject implements Person {
-  _PersonImpl();
+  _PersonImpl.private();
+  
+  
   factory _PersonImpl.fromString(String jsonString) {
-    return new JsonObject.fromJsonString(jsonString, new _PersonImpl());  
+    return new JsonObject.fromJsonString(jsonString, new _PersonImpl.private());  
   } 
+  
+  
+  factory _PersonImpl() {
+    return new _PersonImpl.private();
+  }
 }
 
 
@@ -24,9 +33,13 @@ interface Address extends JsonObject {
    String postcode;
 }
 
-// this test will fail.  But it would be great if it didn't!
-// does anyone have any ideas?
-testStrongTyping() {
+testStrongTyping_new() {
+  Person person = new Person();
+  person.name = "Chris";
+  expect(person.name,equals("Chris"));
+}
+
+testStrongTyping_fromJsonString() {
   print("testStrongTyping");
   var jsonString = _getStrongTypingJsonString();
 

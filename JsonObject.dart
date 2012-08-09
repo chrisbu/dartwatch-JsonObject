@@ -38,7 +38,7 @@ class JsonObject extends Object implements Map {
     _objectData = new Map();
     isExtendable = true;
   }
-
+  
   /// eager constructor parses the jsonString using
   /// JSON.parse(), and
   /// replaces all maps recursively with JsonObjects
