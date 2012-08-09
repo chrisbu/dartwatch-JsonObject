@@ -5,22 +5,21 @@
 interface Person default _PersonImpl {
    AddressList addresses;
    String name;
+   
+   // the from JsonString constructor
    Person.fromString(String jsonString);
+   
+   // the default constructor
    Person();
 }
 
 class _PersonImpl extends JsonObject implements Person {
-  _PersonImpl.private();
-  
+  // need a default, private constructor
+  _PersonImpl();
   
   factory _PersonImpl.fromString(String jsonString) {
-    return new JsonObject.fromJsonString(jsonString, new _PersonImpl.private());  
+    return new JsonObject.fromJsonString(jsonString, new _PersonImpl());  
   } 
-  
-  
-  factory _PersonImpl() {
-    return new _PersonImpl.private();
-  }
 }
 
 
