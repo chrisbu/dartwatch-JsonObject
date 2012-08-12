@@ -62,6 +62,13 @@ class JsonObject extends Object implements Map {
     _extractElements(_objectData);
     isExtendable = false;
   }
+  
+  static JsonObject toTypedJsonObject(JsonObject src, JsonObject dest) {
+    dest._jsonString = src._jsonString;
+    dest._objectData = src._objectData;
+    dest.isExtendable = false;
+    return dest;
+  }
 
 
   ///noSuchMethod() is where the magic happens.

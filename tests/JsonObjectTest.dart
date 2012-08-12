@@ -12,6 +12,7 @@
 #source("testIsExtendable.dart");
 #source("testExtendObject.dart");
 #source("testToString.dart");
+#source("testDartlangArticle.dart");
 
 void main() {
   test('sample data', () {
@@ -48,6 +49,18 @@ void main() {
   test('toString', () {
     print(6);
    testToString();
+  });
+  
+  group('dartlang article', () {
+    test('fromJson', () {
+      print(7);
+      testDartlangArticle_fromJson();
+    });
+    
+    test('new', () {
+      testDartlangArticle_new();
+    });
+    
   });
 
 }
