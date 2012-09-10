@@ -1,3 +1,4 @@
+name: JsonObject
 dependencies:
   unittest:
     sdk: unittest
