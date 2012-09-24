@@ -3,7 +3,7 @@
 #import("../packages/unittest/unittest.dart");
 // #import("packages:unittest/unittest.dart"); // should work but doesn't yet
 
-#import("../JsonObject.dart");
+#import("../lib/JsonObject.dart");
 #import("dart:json");
 
 #source("testStrongTyping.dart");

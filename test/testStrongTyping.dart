@@ -1,24 +1,12 @@
 
-//Define some interfaces
-//that we want our JSON structure to look like
 
-interface Person default _PersonImpl {
-   AddressList addresses;
-   String name;
-   
-   // the from JsonString constructor
-   Person.fromString(String jsonString);
-   
-   // the default constructor
-   Person();
-}
 
-class _PersonImpl extends JsonObject implements Person {
+class Person extends JsonObject {
   // need a default, private constructor
-  _PersonImpl();
+  Person();
   
-  factory _PersonImpl.fromString(String jsonString) {
-    return new JsonObject.fromJsonString(jsonString, new _PersonImpl());  
+  factory Person.fromString(String jsonString) {
+    return new JsonObject.fromJsonString(jsonString, new Person());  
   } 
 }
 
@@ -60,7 +48,7 @@ testStrongTyping_fromJsonString() {
     //and it is a valid warning
     person.wibble;
   }
-  catch (NoSuchMethodException ex) {
+  catch (ex) {
     noSuchMethodException = ex;
   }
 

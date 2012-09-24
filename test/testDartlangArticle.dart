@@ -1,43 +1,24 @@
-interface LanguageWebsite default _LanguageWebsite { 
-  String homepage;
-  String api; 
+class LanguageWebsite extends JsonObject  {
+  LanguageWebsite();  // default constructor (empty) implementation
 
-  LanguageWebsite(); // default constructor
-  LanguageWebsite.fromJsonString(String json); // from JSON constructor
-  LanguageWebsite.fromJsonObject(JsonObject jsonObject); // from JsonObject
-}
-
-interface Language default _Language {
-  String language;
-  List<String> targets;
-  LanguageWebsite website;  
-
-  Language(); // default constructor
-  Language.fromJsonString(String json); // from JSON constructor
-}
-
-class _LanguageWebsite extends JsonObject implements LanguageWebsite {
-  _LanguageWebsite();  // default constructor (empty) implementation
-
-  factory _LanguageWebsite.fromJsonString(String json) { // from JSON constructor implementation
-    var languageWebsite = new _LanguageWebsite(); // create an empty instance of this class
+  factory LanguageWebsite.fromJsonString(String json) { // from JSON constructor implementation
+    var languageWebsite = new LanguageWebsite(); // create an empty instance of this class
     var jsonObject = new JsonObject.fromJsonString(json, languageWebsite); // create an instance of JsonObject, 
                                                                            // populated with the json string and 
                                                                            // injecting the _LanguageWebsite instance.
     return jsonObject; // return the populated JsonObject instance
   }
   
-  factory _LanguageWebsite.fromJsonObject(JsonObject jsonObject) {
-    return JsonObject.toTypedJsonObject(jsonObject, new _LanguageWebsite());
-    
+  factory LanguageWebsite.fromJsonObject(JsonObject jsonObject) {
+    return JsonObject.toTypedJsonObject(jsonObject, new LanguageWebsite());    
   }
 }
 
-class _Language extends JsonObject implements Language {
-  _Language(); // empty, default constructor
+class Language extends JsonObject {
+  Language(); // empty, default constructor
 
-  factory _Language.fromJsonString(String json) { // from JSON constructor implementation
-    return new JsonObject.fromJsonString(json, new _Language()); // as _LangaugeWebsite, return an instance
+  factory Language.fromJsonString(String json) { // from JSON constructor implementation
+    return new JsonObject.fromJsonString(json, new Language()); // as _LangaugeWebsite, return an instance
                                                                  // of JsonObject, containing the json string and
                                                                  // injecting a _Language instance
   }
@@ -55,7 +36,9 @@ void testDartlangArticle_fromJson() {
 }""";
   
   
-  Language data = new Language.fromJsonString(responseText);  
+  Language data = new Language.fromJsonString(responseText);
+  
+  
 
 // tools can now validate the property access
   expect(data.language, equals("dart"));

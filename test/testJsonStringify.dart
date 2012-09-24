@@ -18,8 +18,9 @@ testJsonStringify() {
   
   //convert to a json string:
   String json = JSON.stringify(person);
+  print(json);
   var expectedJson = """
-{"name":"Chris","languages":["Dart","Java"],"address":{"postcode":"AB12 3DE","line1":"1 the street"}}""";
+{"address":{"line1":"1 the street","postcode":"AB12 3DE"},"name":"Chris","languages":["Dart","Java"]}""";
   
   //assert
   Expect.stringEquals(expectedJson, json);
