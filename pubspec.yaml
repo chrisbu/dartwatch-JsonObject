@@ -1,4 +1,9 @@
 name: JsonObject
+version: 1.0.0
+description: > 
+  Allow use of JSON Maps in dot notation format
+author: Chris Buckett
+homepage: https://github.com/chrisbu/dartwatch-JsonObject
 dependencies:
   unittest:
     sdk: unittest
