@@ -1,9 +1,7 @@
 #library("JsonObjectTest");
 
-#import("../packages/unittest/unittest.dart");
-// #import("packages:unittest/unittest.dart"); // should work but doesn't yet
-
-#import("../lib/JsonObject.dart");
+#import('package:JsonObject/JsonObject.dart');
+#import('package:unittest/unittest.dart');
 #import("dart:json");
 
 #source("testStrongTyping.dart");
@@ -13,6 +11,7 @@
 #source("testExtendObject.dart");
 #source("testToString.dart");
 #source("testDartlangArticle.dart");
+#source("testTodoVO.dart");
 
 void main() {
   test('sample data', () {
@@ -23,9 +22,9 @@ void main() {
   group('strong typing', () {
     test('new', () {
       print(2);
-      testStrongTyping_new(); 
+      testStrongTyping_new();
     });
-    
+
     test('from json string', () {
       testStrongTyping_fromJsonString(); // passes build 8942
     });
@@ -48,19 +47,24 @@ void main() {
 
   test('toString', () {
     print(6);
-   testToString();
+    testToString();
   });
-  
+
   group('dartlang article', () {
     test('fromJson', () {
       print(7);
       testDartlangArticle_fromJson();
     });
-    
+
     test('new', () {
       testDartlangArticle_new();
     });
-    
+
+  });
+
+  test('toTodoVO', () {
+    print(7);
+    testTodoVO();
   });
 
 }

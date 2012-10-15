@@ -1,2 +1,4 @@
-packages/
-test/packages/
+.*
+*.lock
+packages
+test/packages
