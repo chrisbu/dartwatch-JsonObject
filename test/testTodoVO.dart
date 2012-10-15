@@ -38,9 +38,9 @@ class _TodoVOImpl extends JsonObject implements TodoVO {
 
     StringBuffer buffer = new StringBuffer();
     buffer.add('{');
-    buffer.add('"id":');
+    buffer.add('"id":"');
     buffer.add(id);
-    buffer.add(', ');
+    buffer.add('", ');
 
     buffer.add('"title":"');
     buffer.add( title );
