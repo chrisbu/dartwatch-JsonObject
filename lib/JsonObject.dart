@@ -170,7 +170,7 @@ class JsonObject extends Object implements Map {
 
   ///If [isExtendable] is true, or the key already exists,
   ///then allow the edit.
-  ///Throw [UnsupportedOperationException] if we're not allowed to add a new
+  ///Throw [UnsupportedError] if we're not allowed to add a new
   ///key
   operator []=(key,value) {
     //if the map isExtendable, or it already contains the key, then
@@ -179,44 +179,44 @@ class JsonObject extends Object implements Map {
       return _objectData[key] = value;
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new UnsupportedError("JsonObject is not extendable");
     }
   }
 
   ///If [isExtendable] is true, or the key already exists,
   ///then allow the edit.
-  ///Throw [UnsupportedOperationException] if we're not allowed to add a new
+  ///Throw [UnsupportedError] if we're not allowed to add a new
   ///key
   putIfAbsent(key,ifAbsent()) {
     if (this.isExtendable == true || this.containsKey(key)) {
       return _objectData.putIfAbsent(key, ifAbsent);
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new UnsupportedError("JsonObject is not extendable");
     }
   }
 
   ///If [isExtendable] is true, or the key already exists,
   ///then allow the removal.
-  ///Throw [UnsupportedOperationException] if we're not allowed to remove a
+  ///Throw [UnsupportedError] if we're not allowed to remove a
   ///key
   remove(key) {
     if (this.isExtendable == true || this.containsKey(key)) {
       return _objectData.remove(key);
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new UnsupportedError("JsonObject is not extendable");
     }
   }
 
   ///If [isExtendable] is true, then allow the map to be cleared
-  ///Throw [UnsupportedOperationException] if we're not allowed to clear.
+  ///Throw [UnsupportedError] if we're not allowed to clear.
   clear() {
     if (this.isExtendable == true) {
       _objectData.clear();
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new UnsupportedError("JsonObject is not extendable");
     }
 
   }
