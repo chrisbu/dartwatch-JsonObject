@@ -11,11 +11,11 @@ testIsExtendable() {
 
   //but we can stop it being extendable, to provide a bit more checking
   person.isExtendable = false;
-  UnsupportedOperationException expectedException = null;
+  UnsupportedError expectedException = null;
   try {
     person.namz = "Bob"; //check for our namz typo - this should throw exception
   }
-  on UnsupportedOperationException catch (ex) {
+  on UnsupportedError catch (ex) {
     expectedException = ex;
   }
   //assert
