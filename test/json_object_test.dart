@@ -12,6 +12,7 @@ part "test_is_extendable.dart";
 part "test_extend_object.dart";
 part "test_to_string.dart";
 part "test_dartlang_article.dart";
+part "test_todo_vo.dart";
 
 void main() {
   test('sample data', () {
@@ -22,7 +23,7 @@ void main() {
   group('strong typing', () {
     test('new', () {
       print(2);
-      testStrongTyping_new(); 
+      testStrongTyping_new(); // passes build 14458
     });
     
     test('from json string', () {
@@ -60,6 +61,11 @@ void main() {
       testDartlangArticle_new(); // passes build 14458
     });
     
+  });
+  
+   test('toTodoVO', () {
+    print(8);
+    testTodoVO();     
   });
 
 }
