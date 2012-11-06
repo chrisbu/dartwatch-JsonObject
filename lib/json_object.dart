@@ -4,7 +4,7 @@
 // http://github.com/chrisbu/dartwatch-JsonObject
 
 
-library json_bject;
+library json_object;
 
 import "dart:json";
 
