@@ -4,8 +4,9 @@
 // http://github.com/chrisbu/dartwatch-JsonObject
 
 
-#library("JsonObject");
-#import("dart:json");
+library json_bject;
+
+import "dart:json";
 
 ///JsonObject allows .property name access to JSON by using
 ///noSuchMethod.
@@ -82,27 +83,33 @@ class JsonObject extends Object implements Map {
   ///
   ///If isExtendable = true, then it will allow the property access
   ///even if the property doesn't yet exist.
-  noSuchMethod(String function_name, List args) {
-    //print("Called: $function_name with $args");
+  noSuchMethod(InvocationMirror mirror) {
+  //noSuchMethod(String function_name, List args) {
+    // print("Called: ${mirror.memberName} with ${mirror.positionalArguments}");
 
-    if (args.length == 0 && function_name.startsWith("get:")) {
+    
+    if (mirror.memberName.startsWith("get:")) {
       //synthetic getter
-      var property = function_name.replaceFirst("get:", "");
+      var property = mirror.memberName.replaceFirst("get:", "");
       if (this.containsKey(property)) {
         return this[property];
       }
     }
-    else if (args.length == 1 && function_name.startsWith("set:")) {
+    else if (mirror.memberName.startsWith("set:")) {
       //synthetic setter
-      var property = function_name.replaceFirst("set:", "");
+      var property = mirror.memberName.replaceFirst("set:", "");
       //if the property doesn't exist, it will only be added
       //if isExtendable = true
-      this[property] = args[0];
+      this[property] = mirror.positionalArguments[0]; // args[0];
       return this[property];
     }
 
     //if we get here, then we've not found it - throw.
-    super.noSuchMethod(function_name, args);
+    print("Not found: ${mirror.memberName}");
+    print("IsGetter: ${mirror.isGetter}");
+    print("IsSetter: ${mirror.isGetter}");
+    print("isAccessor: ${mirror.isAccessor}");
+    super.noSuchMethod(mirror);
   }
 
   ///Private:
@@ -125,16 +132,17 @@ class JsonObject extends Object implements Map {
           //replace the existing Map with a JsonObject
           data[key] = new JsonObject.fromMap(value);
         }
-        else if (value is Collection) {
+        else if (value is List) {
           //recurse
           _extractElements(value);
         }
 
       });
     }
-    else if (data is Collection) {
+    else if (data is List) {
       //iterate through each of the items
       //if any of them is a list, check to see if it contains a map
+      
       for (int i = 0; i < data.length; i++) {
         //use the for loop so that we can index the item to replace it if req'd
         var listItem = data[i];
@@ -160,17 +168,17 @@ class JsonObject extends Object implements Map {
   bool containsKey(value) => _objectData.containsKey(value);
   operator [](key) => _objectData[key];
   forEach(func(key,value)) => _objectData.forEach(func);
-  Collection getKeys() => _objectData.getKeys();
-  Collection getValues() => _objectData.getValues();
-  int get length() => _objectData.length;
-  bool isEmpty() => _objectData.isEmpty();
+  Collection get keys => _objectData.keys;
+  Collection get values => _objectData.values;
+  int get length => _objectData.length;
+  bool get isEmpty => _objectData.isEmpty;
 
   //Specific implementations which check isExtendable to determine if an
   //unknown key should be allowed
 
   ///If [isExtendable] is true, or the key already exists,
   ///then allow the edit.
-  ///Throw [UnsupportedOperationException] if we're not allowed to add a new
+  ///Throw [JsonObjectException] if we're not allowed to add a new
   ///key
   operator []=(key,value) {
     //if the map isExtendable, or it already contains the key, then
@@ -179,44 +187,44 @@ class JsonObject extends Object implements Map {
       return _objectData[key] = value;
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new JsonObjectException("JsonObject is not extendable");
     }
   }
 
   ///If [isExtendable] is true, or the key already exists,
   ///then allow the edit.
-  ///Throw [UnsupportedOperationException] if we're not allowed to add a new
+  ///Throw [JsonObjectException] if we're not allowed to add a new
   ///key
   putIfAbsent(key,ifAbsent()) {
     if (this.isExtendable == true || this.containsKey(key)) {
       return _objectData.putIfAbsent(key, ifAbsent);
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new JsonObjectException("JsonObject is not extendable");
     }
   }
 
   ///If [isExtendable] is true, or the key already exists,
   ///then allow the removal.
-  ///Throw [UnsupportedOperationException] if we're not allowed to remove a
+  ///Throw [JsonObjectException] if we're not allowed to remove a
   ///key
   remove(key) {
     if (this.isExtendable == true || this.containsKey(key)) {
       return _objectData.remove(key);
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new JsonObjectException("JsonObject is not extendable");
     }
   }
 
   ///If [isExtendable] is true, then allow the map to be cleared
-  ///Throw [UnsupportedOperationException] if we're not allowed to clear.
+  ///Throw [JsonObjectException] if we're not allowed to clear.
   clear() {
     if (this.isExtendable == true) {
       _objectData.clear();
     }
     else {
-      throw new UnsupportedOperationException("JsonObject is not extendable");
+      throw new JsonObjectException("JsonObject is not extendable");
     }
 
   }
@@ -224,3 +232,10 @@ class JsonObject extends Object implements Map {
 }
 
 
+class JsonObjectException implements Exception {
+  const JsonObjectException([String message]) : this._message = message;
+  String toString() => (this._message !== null
+                        ? "JsonObjectException: $_message"
+                        : "JsonObjectException");
+  final String _message;
+}

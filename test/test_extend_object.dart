@@ -1,3 +1,4 @@
+part of json_object_test;
 
 class Person2 extends JsonObject {
 

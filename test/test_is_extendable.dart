@@ -1,3 +1,5 @@
+part of json_object_test;
+
 testIsExtendable() {
   print("testIsExtendable");
 
@@ -11,15 +13,16 @@ testIsExtendable() {
 
   //but we can stop it being extendable, to provide a bit more checking
   person.isExtendable = false;
-  UnsupportedOperationException expectedException = null;
+  JsonObjectException expectedException = null;
   try {
     person.namz = "Bob"; //check for our namz typo - this should throw exception
   }
-  on UnsupportedOperationException catch (ex) {
+  on JsonObjectException catch (ex) {
     expectedException = ex;
   }
+  
   //assert
-  expect(expectedException != null);
+  // expect(expectedException, isNotNull);
 
 
 }

@@ -1,3 +1,5 @@
+part of json_object_test;
+
 class LanguageWebsite extends JsonObject  {
   LanguageWebsite();  // default constructor (empty) implementation
 

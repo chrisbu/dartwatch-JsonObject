@@ -1,3 +1,4 @@
+part of json_object_test;
 
 // test issue #4
 testToString() {

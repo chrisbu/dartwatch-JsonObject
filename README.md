@@ -1,5 +1,7 @@
 JsonObject for DART (http://www.dartlang.org)
 
+Now *M1* compatiblem, with new InvocationMirror syntax.
+
 Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
 
 Takes a json string representation, and uses dart:json to parse it.
