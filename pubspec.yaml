@@ -1,4 +1,4 @@
-name: JsonObject
+name: json_object
 version: 1.0.1
 description: > 
   Allow use of JSON Maps in dot notation format
