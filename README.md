@@ -1,6 +1,45 @@
 JsonObject for DART (http://www.dartlang.org)
 
-Now *M1* compatible, with new InvocationMirror syntax.
+Now *M1* compatible, with new noSuchMethod InvocationMirror syntax.
+
+## NEW 12/Nov/2012: Serialize to JSON with mirrors
+
+This does not use the JsonObject class itself - instead, it is a top-level
+function called `objectToJson` which will serialize an Object, a List of objects
+or a map of objects that have String keys.
+
+Example: 
+  
+   import 'package:json_object/json_object.dart';
+
+   class Person {
+    String name;
+    List<Address> addresses = new List<Address>();
+   }
+
+   class Address {
+     String line1;
+     String zipcode;
+     Address(this.line1,this.zipcode);
+   }
+
+   void main() {
+     var person = new Person();
+     person.name = "Mr Smith";
+     person.addresses.add(new Address("1 the street", "98765"));
+     person.addresses.add(new Address("2 some road", "87654"));
+  
+     var json = objectToJson(person);  // Here is the magic
+  
+     print(json); // outputs valid json  
+   }
+   
+   
+Coming soon - deserialize json back to real objects with mirrors.
+Note: At the time of writing, dart2js does not have mirrors built in, so this
+is likely most useful at the moment on the server side.  See (this)[https://groups.google.com/a/dartlang.org/forum/#!topic/misc/6SwESxJS4F4] 
+
+----
 
 Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
 
