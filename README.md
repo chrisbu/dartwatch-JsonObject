@@ -1,6 +1,7 @@
 JsonObject for DART (http://www.dartlang.org)
 
 Usage: Add to pubspec.yaml:
+
     dependencies:
       json_object: 
         git: git://github.com/chrisbu/dartwatch-JsonObject.git
