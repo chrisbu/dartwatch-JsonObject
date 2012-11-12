@@ -1,5 +1,10 @@
 JsonObject for DART (http://www.dartlang.org)
 
+Usage: Add to pubspec.yaml:
+    dependencies:
+      json_object: 
+        git: git://github.com/chrisbu/dartwatch-JsonObject.git
+
 Now *M1* compatible, with new noSuchMethod InvocationMirror syntax.
 
 ## NEW 12/Nov/2012: Serialize to JSON with mirrors
