@@ -10,29 +10,29 @@ or a map of objects that have String keys.
 
 Example: 
   
-   import 'package:json_object/json_object.dart';
+    import 'package:json_object/json_object.dart';
 
-   class Person {
-    String name;
-    List<Address> addresses = new List<Address>();
-   }
+    class Person {
+     String name;
+     List<Address> addresses = new List<Address>();
+    }
 
-   class Address {
-     String line1;
-     String zipcode;
-     Address(this.line1,this.zipcode);
-   }
+    class Address {
+      String line1;
+      String zipcode;
+      Address(this.line1,this.zipcode);
+    }
 
-   void main() {
-     var person = new Person();
-     person.name = "Mr Smith";
-     person.addresses.add(new Address("1 the street", "98765"));
-     person.addresses.add(new Address("2 some road", "87654"));
-  
-     var json = objectToJson(person);  // Here is the magic
-  
-     print(json); // outputs valid json  
-   }
+    void main() {
+      var person = new Person();
+      person.name = "Mr Smith";
+      person.addresses.add(new Address("1 the street", "98765"));
+      person.addresses.add(new Address("2 some road", "87654"));
+   
+      var json = objectToJson(person);  // Here is the magic
+   
+      print(json); // outputs valid json  
+    }
    
    
 Coming soon - deserialize json back to real objects with mirrors.
@@ -40,6 +40,8 @@ Note: At the time of writing, dart2js does not have mirrors built in, so this
 is likely most useful at the moment on the server side.  See [this post on google groups](https://groups.google.com/a/dartlang.org/forum/#!topic/misc/6SwESxJS4F4) 
 
 ----
+
+## JsonObject class (map to dot notation converter)
 
 Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
 
