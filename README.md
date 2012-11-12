@@ -37,7 +37,7 @@ Example:
    
 Coming soon - deserialize json back to real objects with mirrors.
 Note: At the time of writing, dart2js does not have mirrors built in, so this
-is likely most useful at the moment on the server side.  See (this)[https://groups.google.com/a/dartlang.org/forum/#!topic/misc/6SwESxJS4F4] 
+is likely most useful at the moment on the server side.  See [this post on google groups](https://groups.google.com/a/dartlang.org/forum/#!topic/misc/6SwESxJS4F4) 
 
 ----
 
