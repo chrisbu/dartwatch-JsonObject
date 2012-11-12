@@ -7,9 +7,24 @@
 library json_object;
 
 import "dart:json";
+import "dart:mirrors" as mirrors;
 
-///JsonObject allows .property name access to JSON by using
-///noSuchMethod.
+part "src/mirror_based_serializer.dart"; // see test_mirrors.dart for examples
+
+/// Uses mirror based reflection to convert the object passed in to a string
+/// of json.  The object passed in may be any object, list or map.
+/// see test_mirrors.dart for examples.
+String objectToJson(Object object) {
+  return JSON.stringify(objectToSerializable(object));
+}
+
+
+/// JsonObject allows .property name access to JSON by using
+/// noSuchMethod.  
+///
+/// When used with the generic type annotation, 
+/// it uses Dart's mirror system to return a real instance of 
+/// the specified type.
 class JsonObject extends Object implements Map {
   var _jsonString;
   Map _objectData;
@@ -33,8 +48,8 @@ class JsonObject extends Object implements Map {
   ///true, otherwise you can't actually add any new properties.
   bool isExtendable;
 
-  //default constructor.
-  //creates a new empty map.
+  // default constructor.
+  // creates a new empty map.
   JsonObject() {
     _objectData = new Map();
     isExtendable = true;
@@ -70,7 +85,6 @@ class JsonObject extends Object implements Map {
     dest.isExtendable = false;
     return dest;
   }
-
 
   ///noSuchMethod() is where the magic happens.
   ///If we try to access a property using dot notation (eg: o.wibble ), then
@@ -158,6 +172,76 @@ class JsonObject extends Object implements Map {
     }
 
   }
+  
+  
+  _extractElementsWithMirrors(String className, dynamic data) {
+    
+    // Determine the class required.  We might not actually have it in our scope.
+    ClassMirror requiredClass = currentMirrorSystem().isolate.rootLibrary.classes[className]; // TODO: Find class
+    
+    // Create a new instance of the class using parameterless ctor (note, Future)
+    requiredClass.newInstance("", []).then((InstanceMirror inst) {
+      // if this is the top-level instance, set it on the JsonObject
+      if (this._instance == null) this._instance = inst; 
+               
+      print(inst);
+      print(inst.type.getters);
+      
+      if (data is Map) {
+        print("data is map: $data");
+        // iterate through each of the k,v pairs, replacing maps with real 
+        // object instances
+        data.forEach((key,value) {
+          if (value is Map) {
+            if (inst.type.variables.containsKey(key)) {
+              // if the setter is actually a Map, then just set the value!
+              if (inst.type.variables[key].runtimeType is Map) {
+                inst.setField(key, value);
+              }
+              else {
+                // decompose the map into a real class
+                var newClassName = key; // TODO: Find the best matching class name from the instance fields.
+                // Iterate through all the fields of instance, and find the best match
+                data[key] = new JsonObject.toInstance(json, newClassName);
+                // instance.setField(key, new JsonObject.toInstance(value, newClassName).instance); 
+              }
+            }
+          }
+          else if (value is List) {
+            //recurse
+            _extractElementsWithMirrors(key,value);
+          }
+          else {
+            // try and populate the field on the new instance
+            if (inst.type.variables.containsKey(key)) {
+              inst.setField(key, data[key]);
+            }          
+          }
+  
+        });
+      }
+      else if (data is List) {
+        //iterate through each of the items
+        //if any of them is a list, check to see if it contains a map
+        
+//        for (int i = 0; i < data.length; i++) {
+//          //use the for loop so that we can index the item to replace it if req'd
+//          var listItem = data[i];
+//          if (listItem is Collection) {
+//            //recurse
+//            _extractElements(listItem);
+//          }
+//          else if (listItem is Map) {
+//            //replace the existing Map with a JsonObject
+//            data[i] = new JsonObject.fromMap(listItem);
+//          }
+//        }
+      }
+      else {
+        // for all other field types.
+      }
+    });
+  }
 
 
 
@@ -239,3 +323,7 @@ class JsonObjectException implements Exception {
                         : "JsonObjectException");
   final String _message;
 }
+
+
+
+

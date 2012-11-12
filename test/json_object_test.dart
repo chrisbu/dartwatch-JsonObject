@@ -13,6 +13,7 @@ part "test_extend_object.dart";
 part "test_to_string.dart";
 part "test_dartlang_article.dart";
 part "test_todo_vo.dart";
+part "test_mirrors_serialize.dart";
 
 void main() {
   test('sample data', () {
@@ -67,7 +68,9 @@ void main() {
     print(8);
     testTodoVO();     
   });
+   
 
+   testMirrorsSerialize(); // tests converting a class to JSON
 }
 
 
