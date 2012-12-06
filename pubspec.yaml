@@ -6,4 +6,4 @@ description: >
 author: Chris Buckett <chrisbuckett@gmail.com>
 homepage: https://github.com/chrisbu/dartwatch-JsonObject
 dependencies:
-  unittest: {sdk: unittest}
+  unittest: any
