@@ -8,6 +8,7 @@ Usage: Add to pubspec.yaml:
 
 Now *M2* compatible, with new noSuchMethod InvocationMirror syntax.
 
+All tests passing with build 16323
 
 ## NEW 12/Nov/2012: Serialize to JSON with mirrors
 
