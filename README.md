@@ -6,7 +6,8 @@ Usage: Add to pubspec.yaml:
       json_object: 
         git: git://github.com/chrisbu/dartwatch-JsonObject.git
 
-Now *M1* compatible, with new noSuchMethod InvocationMirror syntax.
+Now *M2* compatible, with new noSuchMethod InvocationMirror syntax.
+
 
 ## NEW 12/Nov/2012: Serialize to JSON with mirrors
 
