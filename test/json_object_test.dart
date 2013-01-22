@@ -14,8 +14,9 @@ part "test_to_string.dart";
 part "test_dartlang_article.dart";
 part "test_todo_vo.dart";
 part "test_mirrors_serialize.dart";
+part "test_list.dart";
 
-void main() {
+void main() {  
   test('sample data', () {
     print(1);
     testSampleData(); // passes build 14458
@@ -68,6 +69,11 @@ void main() {
     print(8);
     testTodoVO();     
   });
+   
+   test('list', () {
+     print(9);
+     testList();
+   });
    
 
    testMirrorsSerialize(); // tests converting a class to JSON

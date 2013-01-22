@@ -27,7 +27,7 @@ String objectToJson(Object object) {
 /// the specified type.
 class JsonObject extends Object implements Map {
   var _jsonString;
-  Map _objectData;
+  var _objectData;
 
   toString() => JSON.stringify(this);
 
