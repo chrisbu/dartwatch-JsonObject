@@ -5,14 +5,16 @@ JsonObject for DART (http://www.dartlang.org)
 Usage: Add to pubspec.yaml:
 
     dependencies:
-      json_object: 
-        git: git://github.com/chrisbu/dartwatch-JsonObject.git
+  	  json_object: any    
 
-Now *M3* compatible, with new noSuchMethod InvocationMirror syntax.
+Now *M3* compatible.
 
 All tests passing with build 17328
 
-## WARNING: 23/Jan/2013: Serialize to JSON with mirrors is currently not working.
+### Note: 23/Jan/2013
+
+Serialize to JSON with mirrors is currently not working.
+
 The `objectToJson` function has had to be removed (actually, made private) 
 until I get around to fixing it with the new Future syntax. 
 
