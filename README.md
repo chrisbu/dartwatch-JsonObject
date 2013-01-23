@@ -1,5 +1,7 @@
 JsonObject for DART (http://www.dartlang.org)
 
+[![](https://drone.io/chrisbu/json_object/status.png)](https://drone.io/chrisbu/json_object/latest)
+
 Usage: Add to pubspec.yaml:
 
     dependencies:
