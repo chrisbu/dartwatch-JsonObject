@@ -14,20 +14,24 @@ dynamic objectToSerializable(Object object) {
       object is bool ||
       object is String ||
       object == null) {
+    print("std");
     result = object; // is it just a standard serializable object?
   }
   else if (object is Map) {
+    print("map");
     // convert the map into a serialized map.
     // each value in the map may be a complex object, so we need to test this.
     result = _serializeEachValue(object);
   }
   else if (object is List) {
+    print(list);
     // is the object passed in a list?  If so, we need to convert each
     // item in the list to something that is serializable, and add it to the list
     result = new List(); 
     object.forEach((value) => result.add(objectToSerializable(value)));
   }
   else {
+    print("else");
     // otherwise, it is one of our classes, in which case, we need to 
     // try and serialize it
     var instanceMirror = mirrors.reflect(object);
@@ -61,6 +65,9 @@ _getFutureValues(instanceMirror) {
     // for each field (that is not private or static
     var futureValues = new List<Future>();
     
+    print("Getters: ${classMirror.getters}");
+    print("Variables: ${classMirror.variables}");
+    
     // for each getter:
     classMirror.getters.forEach((key, getter) {
       if (!getter.isPrivate && !getter.isStatic) {
@@ -70,13 +77,15 @@ _getFutureValues(instanceMirror) {
     
     // for each field
     classMirror.variables.forEach((key, variable) {
+      print("Variable: $key:$variable");
       if (!variable.isPrivate && !variable.isStatic) {
+        print("recursing: $objectMap,$key,$instanceMirror,$variable,$futureValues");
         _getFutureValue(objectMap,key,instanceMirror,variable,futureValues);
       }
     });
     
     // wait for all the future values to be retrieved
-    Futures.wait(futureValues);  
+    Future.wait(futureValues); // TODO: Convert this to be really async.  
   }
   else {
     // the input is a map, so each value needs to be serialized
@@ -90,8 +99,10 @@ _getFutureValues(instanceMirror) {
 /// function, if the type is a simple type, it will populate the 
 /// objectMap's value for the specified key.  If it is 
 _getFutureValue(objectMap, key, instanceMirror, value, futureValues) {
-  var futureValue = instanceMirror.getField(key);
-  futureValue.onComplete((value) {
+  Future futureValue = instanceMirror.getField(key);
+  print("Getting future: $key");
+  futureValue.asStream().listen((value) {
+    print("FutureValue has value");
     if (value.hasValue) {
       var instanceMirror = value.value;
       if (instanceMirror.hasReflectee) {

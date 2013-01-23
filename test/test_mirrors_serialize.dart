@@ -140,7 +140,9 @@ testMirrorsSerialize() {
       test('Basic', () {
         // Test a class that contains basic type fields
         var object = new Basic();
+        print("Object: $object");
         var json = objectToJson(object);
+        print("Json: $json");
         var map = JSON.parse(json);
         expect(map["aString"], equals(object.aString));
         expect(map["aNum"], equals(object.aNum));

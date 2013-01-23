@@ -6,15 +6,16 @@
 
 library json_object;
 
-import "dart:json";
-import "dart:mirrors" as mirrors;
+import "dart:json" as JSON;
+import "dart:async";
+// import "dart:mirrors" as mirrors;
 
 part "src/mirror_based_serializer.dart"; // see test_mirrors.dart for examples
 
 /// Uses mirror based reflection to convert the object passed in to a string
 /// of json.  The object passed in may be any object, list or map.
 /// see test_mirrors.dart for examples.
-String objectToJson(Object object) {
+String _objectToJson(Object object) {
   return JSON.stringify(objectToSerializable(object));
 }
 
