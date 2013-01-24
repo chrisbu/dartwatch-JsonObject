@@ -8,15 +8,32 @@ library json_object;
 
 import "dart:json" as JSON;
 import "dart:async";
-// import "dart:mirrors" as mirrors;
+import "dart:mirrors" as mirrors;
 
 part "src/mirror_based_serializer.dart"; // see test_mirrors.dart for examples
 
 /// Uses mirror based reflection to convert the object passed in to a string
 /// of json.  The object passed in may be any object, list or map.
 /// see test_mirrors.dart for examples.
-String _objectToJson(Object object) {
-  return JSON.stringify(objectToSerializable(object));
+Future<String> objectToJson(Object object) {
+  var completer = new Completer<String>();
+  
+  var onSuccess = (value) {
+    print("About to stringify: $value");
+    var string = JSON.stringify(value);
+    completer.complete(string);
+  };
+  var onError = (AsyncError error) {
+    print("JsonObject Future Error: $object");
+    print("Object: ${object.runtimeType}");
+    print("Stringified: ${JSON.stringify(object)}");
+    completer.completeError(error, error.stackTrace);
+  };
+  
+  objectToSerializable(object).then(onSuccess, onError:onError);
+  
+  return completer.future;
+  
 }
 
 
@@ -175,76 +192,6 @@ class JsonObject extends Object implements Map {
   }
   
   
-  _extractElementsWithMirrors(String className, dynamic data) {
-    
-    // Determine the class required.  We might not actually have it in our scope.
-    ClassMirror requiredClass = currentMirrorSystem().isolate.rootLibrary.classes[className]; // TODO: Find class
-    
-    // Create a new instance of the class using parameterless ctor (note, Future)
-    requiredClass.newInstance("", []).then((InstanceMirror inst) {
-      // if this is the top-level instance, set it on the JsonObject
-      if (this._instance == null) this._instance = inst; 
-               
-      print(inst);
-      print(inst.type.getters);
-      
-      if (data is Map) {
-        print("data is map: $data");
-        // iterate through each of the k,v pairs, replacing maps with real 
-        // object instances
-        data.forEach((key,value) {
-          if (value is Map) {
-            if (inst.type.variables.containsKey(key)) {
-              // if the setter is actually a Map, then just set the value!
-              if (inst.type.variables[key].runtimeType is Map) {
-                inst.setField(key, value);
-              }
-              else {
-                // decompose the map into a real class
-                var newClassName = key; // TODO: Find the best matching class name from the instance fields.
-                // Iterate through all the fields of instance, and find the best match
-                data[key] = new JsonObject.toInstance(json, newClassName);
-                // instance.setField(key, new JsonObject.toInstance(value, newClassName).instance); 
-              }
-            }
-          }
-          else if (value is List) {
-            //recurse
-            _extractElementsWithMirrors(key,value);
-          }
-          else {
-            // try and populate the field on the new instance
-            if (inst.type.variables.containsKey(key)) {
-              inst.setField(key, data[key]);
-            }          
-          }
-  
-        });
-      }
-      else if (data is List) {
-        //iterate through each of the items
-        //if any of them is a list, check to see if it contains a map
-        
-//        for (int i = 0; i < data.length; i++) {
-//          //use the for loop so that we can index the item to replace it if req'd
-//          var listItem = data[i];
-//          if (listItem is Collection) {
-//            //recurse
-//            _extractElements(listItem);
-//          }
-//          else if (listItem is Map) {
-//            //replace the existing Map with a JsonObject
-//            data[i] = new JsonObject.fromMap(listItem);
-//          }
-//        }
-      }
-      else {
-        // for all other field types.
-      }
-    });
-  }
-
-
 
   //***************************************************************************
   //*** Map implementation methods and properties ***
@@ -319,7 +266,7 @@ class JsonObject extends Object implements Map {
 
 class JsonObjectException implements Exception {
   const JsonObjectException([String message]) : this._message = message;
-  String toString() => (this._message !== null
+  String toString() => (this._message != null
                         ? "JsonObjectException: $_message"
                         : "JsonObjectException");
   final String _message;
