@@ -54,6 +54,34 @@ class ContainsGetters {
   
   final _aFinal = "final";
   get aFinal => _aFinal;
+}
+
+class ContainsGettersAndObject {
+  String _aString = "This is a string";
+  String get aString => _aString;
+  
+  bool _aBool = true;
+  bool get aBool => _aBool;
+  set aBool(value) => _aBool = value;
+  
+  num _aNum = 123;
+  num get aNum => _aNum;
+  set aNum(value) => _aNum = value;
+  
+  double _aDouble = 234.56;
+  double get aDouble => _aDouble;
+  set aDouble(value) => _aDouble = value;
+  
+  int _anInt = 234;
+  int get anInt => _anInt;
+  set anInt(value) => _anInt = value;
+  
+  var _aNull = null;
+  get aNull => _aNull;
+  set aNull(value) => _aNull = value;
+  
+  final _aFinal = "final";
+  get aFinal => _aFinal;
   
   Basic _basic = new Basic();
   Basic get basic => _basic;
@@ -266,7 +294,6 @@ testMirrorsSerialize() {
       test('Basic', () {
         // Test a class that contains basic type fields
         var object = new Basic();
-        print("Object: $object");
         var future = objectToJson(object);
         var expectation = new Map();
         expectation["aString"] = object.aString;
@@ -413,24 +440,48 @@ testMirrorsSerialize() {
 //      });
 //    });
 //    
-//    group('getters setters private static', () {
-//      test('ContainsGetters', () {
-//        var object = new ContainsGetters();
+    group('getters setters private static', () {
+      test('ContainsGetters', () {
+        var object = new ContainsGetters();
+        
+        
+        var expectation = new Map();
+        
+        expectation["aString"] = object.aString;
+        expectation["aNum"] = object.aNum;
+        expectation["aDouble"] = object.aDouble;
+        expectation["aBool"] = object.aBool;
+        expectation["anInt"] = object.anInt;
+        expectation["aNull"] = object.aNull;
+        expectation["aFinal"] = object.aFinal;
+        
+        // The call under test
+        var future = objectToJson(object);
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+      
+//      test('ContainsGettersAndObject', () {
+//        var object = new ContainsGettersAndObject();
+//        
+//        var expectation = new Map();
+//        
+//        expectation["aString"] = object.aString;
+//        expectation["aNum"] = object.aNum;
+//        expectation["aDouble"] = object.aDouble;
+//        expectation["aBool"] = object.aBool;
+//        expectation["anInt"] = object.anInt;
+//        expectation["aNull"] = object.aNull;
+//        expectation["aFinal"] = object.aFinal;
+//        expectation["basic"] = new Map();
+//        expectation["basic"]["aString"] = object.aString;
 //        
 //        // The call under test
-//        var json = objectToJson(object);
-//        var map = JSON.parse(json);
+//        var future = objectToJson(object);
 //        
-//        expect(map["aString"], equals(object.aString));
-//        expect(map["aNum"], equals(object.aNum));
-//        expect(map["aDouble"], equals(object.aDouble));
-//        expect(map["aBool"], equals(object.aBool));
-//        expect(map["anInt"], equals(object.anInt));
-//        expect(map["aNull"], equals(object.aNull));
-//        expect(map["aFinal"], equals(object.aFinal));
-//        expect(map["basic"]["aString"], equals(object.aString));
+//        expect(future, completion(new JsonMapMatcher(expectation)));
 //      });
-//    
+    
 //      test('ContainsPrivate', () {
 //        var object = new ContainsPrivate();
 //        
@@ -465,7 +516,7 @@ testMirrorsSerialize() {
 //        expect(map.keys.length,equals(1));
 //        expect(map["field"], equals(object.field));
 //      });
-//    });
+    });
 
     
   });

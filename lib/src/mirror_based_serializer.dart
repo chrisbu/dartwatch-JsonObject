@@ -91,9 +91,24 @@ void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer
   var futuresList = new List<Future>();
   
     // for each getter:
-   classMirror.getters.forEach((key, getter) {
+   classMirror.getters.forEach((getterKey, getter) {
       if (!getter.isPrivate && !getter.isStatic) {
+        print("getter: ${getter.qualifiedName}");
+        var futureField = instanceMirror.getField(getterKey);
+        print("got future field: $futureField");
         
+        var onGetFutureFieldSuccess = (instanceMirrorField) {
+          print("Got reflecteee for $getterKey: ${instanceMirrorField.reflectee}");
+          resultMap[getterKey] = instanceMirrorField.reflectee;
+        };
+        
+        var onGetFutureFieldError = (error) {
+          print("Error: $error");
+          completer.complete(error);
+        };
+        
+        futureField.then(onGetFutureFieldSuccess, onError:onGetFutureFieldError);
+        futuresList.add(futureField);
       }
     });
     
@@ -110,6 +125,7 @@ void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer
         var onGetFutureFieldError = (error) => completer.complete(error);
         
         futureField.then(onGetFutureFieldSuccess, onError:onGetFutureFieldError);
+        futuresList.add(futureField);
       }
       
     });  
