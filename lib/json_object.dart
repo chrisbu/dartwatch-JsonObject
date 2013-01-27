@@ -118,8 +118,6 @@ class JsonObject extends Object implements Map {
   noSuchMethod(InvocationMirror mirror) {
   //noSuchMethod(String function_name, List args) {
     // print("Called: ${mirror.memberName} with ${mirror.positionalArguments}");
-
-    
     int positionalArgs = 0;
     if (mirror.positionalArguments != null) positionalArgs = mirror.positionalArguments.length;
     
