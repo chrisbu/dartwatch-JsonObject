@@ -11,16 +11,34 @@ Now *M3* compatible.
 
 All tests passing with build 17328
 
-### Note: 23/Jan/2013
+You can use JsonObject in two different ways.  is the objectToJson method
+which uses reflection to convert an object into json.  The other is two-way 
+conversion of JSON into a class.
 
-Serialize to JSON with mirrors is currently not working.
+## Using reflection to serialize
 
-The `objectToJson` function has had to be removed (actually, made private) 
-until I get around to fixing it with the new Future syntax. 
+Serialize to JSON with reflection is currently not working fully.
+`objectToJson` is now returns a future.  It can currently be used 
+to serialize objects, or lists / maps of objects that contain simple fields and 
+getters that return string / num / bool (rather than other embedded objects). 
+(That's next on the todo list). 
 
+Example:
+    import 'package: 
+   
+    class Basic {
+       String myString = "foo";
+       int myInt = 42;
+    }
+    
+    main() {
+      var basic = new Basic();
+      objectToJson(basic).then((jsonStr) => print(jsonStr));
+    }
+  
 ----
 
-## JsonObject class (map to dot notation converter)
+## Accessing JSON Maps in a class-based fashion
 
 Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
 
@@ -47,21 +65,6 @@ It implements Map, so you can convert it back to Json using JSON.stringify():
     person.name = "Chris";
     person.languages = ["Dart","Java"];
     var json = JSON.stringify(person);
-
-By coding against an interface, you can get stronger typing.
-An interface can now extend a Class (which is also implicitly an interface) :
-
-    interface Person extends JsonObject { 
-      String name;
-      List languages;
-    }
-    
-    //...snip
-    Person person = new JsonObject(); //this works without warning
-                                      //because Person extends JsonObject
-    person.name = "Chris";
-    person.languages = //etc...  
-    //will get strongly type checked.
 
 Take a look at the unit tests to get an idea of how you can use it.
 

@@ -1,5 +1,5 @@
 name: json_object
-version: 1.0.5
+version: 1.0.6
 description: > 
   Allow use of JSON Maps in dot notation format.  
 author: Chris Buckett <chrisbuckett@gmail.com>
