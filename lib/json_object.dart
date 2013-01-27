@@ -120,7 +120,9 @@ class JsonObject extends Object implements Map {
     // print("Called: ${mirror.memberName} with ${mirror.positionalArguments}");
 
     
-    if (mirror.isGetter && mirror.positionalArguments.length == 0) {
+    if (mirror.isGetter && 
+        (mirror.positionalArguments == null || 
+        mirror.positionalArguments.Length == 0)) {
       //synthetic getter
       var property = mirror.memberName;
       if (this.containsKey(property)) {
