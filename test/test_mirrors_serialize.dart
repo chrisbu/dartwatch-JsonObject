@@ -108,6 +108,25 @@ class ContainsMethods {
   var field = "serialize me";
 }
 
+class AnObject {
+  Basic basic = new Basic();
+}
+
+class ContainsSimpleObject {
+  AnObject anObject = new AnObject();
+  AnObject anObject2 = new AnObject();
+  AnObject anObject3 = new AnObject();
+  List<AnObject> objects = new List<AnObject>();
+  Map<String, AnObject> objMap = new Map<String, AnObject>();
+  
+  ContainsSimpleObject() {
+    objects.add(new AnObject());
+    objects.add(new AnObject());
+    objMap["aaa"] = new AnObject();
+    objMap["bbb"] = new AnObject();
+  }
+}
+
 class ContainsObject {
   Basic basic = new Basic();
   String aString = "aString";
@@ -152,6 +171,11 @@ class ContainsObjectMap {
 // Main test method
 
 testMirrorsSerialize() {
+  var obj = new ContainsSimpleObject();
+  objectToJson(obj).then((string) => print("--> $string"));
+  
+  
+  
   group('mirrors:', () {
     
     /* There are two types of objects: 
@@ -338,112 +362,187 @@ testMirrorsSerialize() {
       });
       
     });
-//    
-//    group('complex', () {
-//      test('ContainsObject', () {
-//        // Test a class that contains a child object
-//        var object = new ContainsObject();
-//        var json = objectToJson(object);
-//        var map = JSON.parse(json);
-//        expect(map["aString"],equals(object.aString));
-//        expect(map["basic"]["aString"],equals(object.basic.aString));
-//        expect(map["basic"]["aBool"],equals(object.basic.aBool));
-//        expect(map["basic"]["aNum"],equals(object.basic.aNum));
-//        expect(map["basic"]["aDouble"],equals(object.basic.aDouble));
-//        expect(map["basic"]["anInt"],equals(object.basic.anInt));
-//        expect(map["basic"]["aNull"],equals(object.basic.aNull));
-//        expect(map["basic"]["aFinal"],equals(object.basic.aFinal));
-//      }); 
-//    
-//      test('ContainsObjectList', () {
-//        // Test a class that has a list of child objects
-//        var object = new ContainsObjectList();
-//        var json = objectToJson(object);
-//        var map = JSON.parse(json);
-//        expect(map["aString"],equals(object.aString));
-//        expect(map["basicList"].length,equals(2));
-//        expect(map["basicList"][0]["aString"],equals(object.basicList[0].aString));
-//        expect(map["basicList"][0]["aBool"],equals(object.basicList[0].aBool));
-//        expect(map["basicList"][0]["aNum"],equals(object.basicList[0].aNum));
-//        expect(map["basicList"][0]["aDouble"],equals(object.basicList[0].aDouble));
-//        expect(map["basicList"][0]["anInt"],equals(object.basicList[0].anInt));
-//        expect(map["basicList"][0]["aNull"],equals(object.basicList[0].aNull));
-//        expect(map["basicList"][0]["aFinal"],equals(object.basicList[0].aFinal));
-//      }); 
-//      
-//      
-//      test('ContainsObjectMap', () {
-//        // Test a class that contains maps of real objects
-//        var object = new ContainsObjectMap();
-//        
-//        // The call under test
-//        var json = objectToJson(object);
-//        
-//        // Parse and test the output json
-//        var map = JSON.parse(json);
-//        expect(map["basicMap"]["basic1"]["aString"],equals(object.basicMap["basic1"].aString));
-//        expect(map["basicMap"]["basic1"]["aBool"],equals(object.basicMap["basic1"].aBool));
-//        expect(map["basicMap"]["basic1"]["aNum"],equals(object.basicMap["basic1"].aNum));
-//        expect(map["basicMap"]["basic1"]["aDouble"],equals(object.basicMap["basic1"].aDouble));
-//        expect(map["basicMap"]["basic1"]["anInt"],equals(object.basicMap["basic1"].anInt));
-//        expect(map["basicMap"]["basic1"]["aNull"],equals(object.basicMap["basic1"].aNull));
-//        expect(map["basicMap"]["basic1"]["aFinal"],equals(object.basicMap["basic1"].aFinal));
-//        expect(map["basicMap"]["basic2"]["aString"],equals(object.basicMap["basic2"].aString));
-//
-//        expect(map["objectMap"]["object1"]["basic"]["aString"],
-//            equals(object.objectMap["object1"].basic.aString));
-//        expect(map["objectMap"]["object2"]["basic"]["aString"],
-//            equals(object.objectMap["object2"].basic.aString));
-//        
-//        expect(map["objectListMap"]["objectList1"]["basicList"][0]["aString"],
-//            equals(object.objectListMap["objectList1"].basicList[0].aString));
-//        
-//        expect(map["listObjectMap"]["list1"][0]["aString"],
-//            equals(object.listObjectMap["list1"][0].aString));
-//        expect(map["listObjectMap"]["list1"][1]["aString"],
-//            equals(object.listObjectMap["list1"][1].aString));
-//        expect(map["listObjectMap"]["list2"][0]["aString"],
-//            equals(object.listObjectMap["list2"][0].aString));
-//      });
-//    });
-//    
-//    group('lists and maps', () {
-//      test('List<Basic>', () {
-//          var list = new List<Basic>();
-//          list.add(new Basic());
-//          list.add(new Basic());
-//          
-//          // The call under test
-//          var json = objectToJson(list);
-//          print(json);
-//          
-//          // Parse the output json
-//          var parsed = JSON.parse(json);
-//          expect(parsed.length,equals(2));
-//          expect(parsed[0]["aString"], equals(list[0].aString)); 
-//          expect(parsed[1]["aString"], equals(list[1].aString));
-//      });
-//      
-//      test('Map<Basic>', () {
-//        var map = new Map<String,Basic>();
-//        map["item1"] = new Basic();
-//        map["item2"] = new Basic();
-//
-//        // The call under test
-//        var json = objectToJson(map);
-//        
-//        var parsed = JSON.parse(json);
-//        expect(parsed.keys.length,equals(2));
-//        expect(parsed["item1"]["aString"], equals(map["item1"].aString)); 
-//        expect(parsed["item2"]["aString"], equals(map["item2"].aString));
-//        
-//      });
-//    });
-//    
+    
+    group('complex', () {
+      test('ContainsSimpleObject', () {
+        // Test a class that contains a child object
+        var object = new ContainsSimpleObject();
+        var future = objectToJson(object);
+        var expectation = new Map();
+        expectation["anObject"] = new Map(); 
+        expectation["anObject2"] = new Map();
+        expectation["anObject3"] = new Map();
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      }); 
+      
+      test('ContainsObject', () {
+        // Test a class that contains a child object
+        var object = new ContainsObject();
+        var future = objectToJson(object);
+        var expectation = new Map();
+        expectation["aString"] = object.aString;
+        expectation["basic"] = new Map();
+        expectation["basic"]["aString"] = object.basic.aString;
+        expectation["basic"]["aBool"] = object.basic.aBool;
+        expectation["basic"]["aNum"] = object.basic.aNum;
+        expectation["basic"]["aDouble"] = object.basic.aDouble;
+        expectation["basic"]["anInt"] = object.basic.anInt;
+        expectation["basic"]["aNull"] = object.basic.aNull;
+        expectation["basic"]["aFinal"] = object.basic.aFinal;
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      }); 
+    
+      test('ContainsObjectList', () {
+        // Test a class that has a list of child objects
+        var object = new ContainsObjectList();
+        var future = objectToJson(object);
+        
+        var expectation = new Map();
+        expectation["aString"] = object.aString;
+        expectation["basicList"] = new List();
+        expectation["basicList"].add(new Map());
+        expectation["basicList"][0]["aString"] = object.basicList[0].aString;
+        expectation["basicList"][0]["aBool"] = object.basicList[0].aBool;
+        expectation["basicList"][0]["aNum"] = object.basicList[0].aNum;
+        expectation["basicList"][0]["aDouble"] = object.basicList[0].aDouble;
+        expectation["basicList"][0]["anInt"] = object.basicList[0].anInt;
+        expectation["basicList"][0]["aNull"] = object.basicList[0].aNull;
+        expectation["basicList"][0]["aFinal"] = object.basicList[0].aFinal;
+        
+        expectation["basicList"].add(new Map());
+        expectation["basicList"][1]["aString"] = object.basicList[1].aString;
+        expectation["basicList"][1]["aBool"] = object.basicList[1].aBool;
+        expectation["basicList"][1]["aNum"] = object.basicList[1].aNum;
+        expectation["basicList"][1]["aDouble"] = object.basicList[1].aDouble;
+        expectation["basicList"][1]["anInt"] = object.basicList[1].anInt;
+        expectation["basicList"][1]["aNull"] = object.basicList[1].aNull;
+        expectation["basicList"][1]["aFinal"] = object.basicList[1].aFinal;
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      }); 
+      
+      
+      test('ContainsObjectMap', () {
+        // Test a class that contains maps of real objects
+        var object = new ContainsObjectMap();
+        
+        // The call under test
+        var future = objectToJson(object);
+        
+        var expectation = new Map();
+        
+        // Parse and test the output json
+        expectation["basicMap"] = new Map();
+        expectation["basicMap"]["basic1"] = new Map();
+        expectation["basicMap"]["basic1"]["aString"] = object.basicMap["basic1"].aString;
+        expectation["basicMap"]["basic1"]["aBool"] = object.basicMap["basic1"].aBool;
+        expectation["basicMap"]["basic1"]["aNum"] = object.basicMap["basic1"].aNum;
+        expectation["basicMap"]["basic1"]["aDouble"] = object.basicMap["basic1"].aDouble;
+        expectation["basicMap"]["basic1"]["anInt"] = object.basicMap["basic1"].anInt;
+        expectation["basicMap"]["basic1"]["aNull"] = object.basicMap["basic1"].aNull;
+        expectation["basicMap"]["basic1"]["aFinal"] = object.basicMap["basic1"].aFinal;
+        expectation["basicMap"]["basic2"] = new Map();
+        expectation["basicMap"]["basic2"]["aString"] = object.basicMap["basic2"].aString;
+
+        expectation["objectMap"] = new Map();
+        expectation["objectMap"]["object1"] = new Map();
+        expectation["objectMap"]["object1"]["basic"] = new Map();
+        expectation["objectMap"]["object1"]["basic"]["aString"] = object.objectMap["object1"].basic.aString;
+        expectation["objectMap"]["object2"] = new Map();
+        expectation["objectMap"]["object2"]["basic"] = new Map();
+        expectation["objectMap"]["object2"]["basic"]["aString"] = object.objectMap["object2"].basic.aString;
+        
+        expectation["objectListMap"] = new Map();
+        expectation["objectListMap"]["objectList1"] = new Map();
+        expectation["objectListMap"]["objectList1"]["basicList"] = new List();
+        expectation["objectListMap"]["objectList1"]["basicList"].add(new Map());
+        expectation["objectListMap"]["objectList1"]["basicList"][0]["aString"] = object.objectListMap["objectList1"].basicList[0].aString;
+        
+        expectation["listObjectMap"] = new Map();
+        expectation["listObjectMap"]["list1"] = new List();
+        expectation["listObjectMap"]["list1"].add(new Map());
+        expectation["listObjectMap"]["list1"][0]["aString"] = object.listObjectMap["list1"][0].aString;
+        expectation["listObjectMap"]["list1"].add(new Map());
+        expectation["listObjectMap"]["list1"][1]["aString"] = object.listObjectMap["list1"][1].aString;
+        expectation["listObjectMap"]["list2"] = new List();
+        expectation["listObjectMap"]["list2"].add(new Map());
+        expectation["listObjectMap"]["list2"][0]["aString"] = object.listObjectMap["list2"][0].aString;
+     
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+    });
+    
+    group('lists and maps', () {
+      test('List<Basic>', () {
+          var list = new List<Basic>();
+          list.add(new Basic());
+          list.add(new Basic());
+          
+          // The call under test
+          var future = objectToJson(list);
+          
+          var expectation = new List();
+          expectation.add(new Map());
+          expectation[0]["aString"] = list[0].aString;
+          expectation[0]["aBool"] = list[0].aBool;
+          expectation[0]["aNum"] = list[0].aNum;
+          expectation[0]["aDouble"] = list[0].aDouble;
+          expectation[0]["anInt"] = list[0].anInt;
+          expectation[0]["aNull"] = list[0].aNull;
+          expectation[0]["aFinal"] = list[0].aFinal;
+          expectation.add(new Map());    
+          expectation[1]["aString"] = list[1].aString;
+          expectation[1]["aString"] = list[1].aString;
+          expectation[1]["aBool"] = list[1].aBool;
+          expectation[1]["aNum"] = list[1].aNum;
+          expectation[1]["aDouble"] = list[1].aDouble;
+          expectation[1]["anInt"] = list[1].anInt;
+          expectation[1]["aNull"] = list[1].aNull;
+          expectation[1]["aFinal"] = list[1].aFinal;
+          
+          
+          expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+      
+      test('Map<Basic>', () {
+        var map = new Map<String,Basic>();
+        map["item1"] = new Basic();
+        map["item2"] = new Basic();
+
+        // The call under test
+        var future = objectToJson(map);
+        
+        var expectation = new Map();
+        
+        expectation["item1"] = new Map();
+        expectation["item1"]["aString"] = map["item1"].aString;
+        expectation["item1"]["aBool"] = map["item1"].aBool;
+        expectation["item1"]["aNum"] = map["item1"].aNum;
+        expectation["item1"]["aDouble"] = map["item1"].aDouble;
+        expectation["item1"]["anInt"] = map["item1"].anInt;
+        expectation["item1"]["aNull"] = map["item1"].aNull;
+        expectation["item1"]["aFinal"] = map["item1"].aFinal;
+        expectation["item2"] = new Map();
+        expectation["item2"]["aString"] = map["item2"].aString;
+        expectation["item2"]["aBool"] = map["item2"].aBool;
+        expectation["item2"]["aNum"] = map["item2"].aNum;
+        expectation["item2"]["aDouble"] = map["item2"].aDouble;
+        expectation["item2"]["anInt"] = map["item2"].anInt;
+        expectation["item2"]["aNull"] = map["item2"].aNull;
+        expectation["item2"]["aFinal"] = map["item2"].aFinal;
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+    });
+    
     group('getters setters private static', () {
       test('ContainsGetters', () {
         var object = new ContainsGetters();
         
+        // The call under test
+        var future = objectToJson(object);
         
         var expectation = new Map();
         
@@ -455,69 +554,73 @@ testMirrorsSerialize() {
         expectation["aNull"] = object.aNull;
         expectation["aFinal"] = object.aFinal;
         
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+      
+      test('ContainsGettersAndObject', () {
+        var object = new ContainsGettersAndObject();
+        
         // The call under test
         var future = objectToJson(object);
+        
+        var expectation = new Map();
+        
+        expectation["aString"] = object.aString;
+        expectation["aNum"] = object.aNum;
+        expectation["aDouble"] = object.aDouble;
+        expectation["aBool"] = object.aBool;
+        expectation["anInt"] = object.anInt;
+        expectation["aNull"] = object.aNull;
+        expectation["aFinal"] = object.aFinal;
+        expectation["basic"] = new Map();
+        expectation["basic"]["aString"] = object.aString;
+        
+        
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+    
+      test('ContainsPrivate', () {
+        var object = new ContainsPrivate();
+        
+        // The call under test
+        var future = objectToJson(object);
+        
+        var expectation = new Map();
+        
+        expectation["_iAmPrivate"] = null;
+        expectation["iAmPublic"] = object.iAmPublic;
         
         expect(future, completion(new JsonMapMatcher(expectation)));
       });
       
-//      test('ContainsGettersAndObject', () {
-//        var object = new ContainsGettersAndObject();
-//        
-//        var expectation = new Map();
-//        
-//        expectation["aString"] = object.aString;
-//        expectation["aNum"] = object.aNum;
-//        expectation["aDouble"] = object.aDouble;
-//        expectation["aBool"] = object.aBool;
-//        expectation["anInt"] = object.anInt;
-//        expectation["aNull"] = object.aNull;
-//        expectation["aFinal"] = object.aFinal;
-//        expectation["basic"] = new Map();
-//        expectation["basic"]["aString"] = object.aString;
-//        
-//        // The call under test
-//        var future = objectToJson(object);
-//        
-//        expect(future, completion(new JsonMapMatcher(expectation)));
-//      });
-    
-//      test('ContainsPrivate', () {
-//        var object = new ContainsPrivate();
-//        
-//        // The call under test
-//        var json = objectToJson(object);
-//        var map = JSON.parse(json);
-//        
-//        expect(map.keys.length,equals(1));
-//        expect(map["_iAmPrivate"], isNull);
-//        expect(map["iAmPublic"], equals(object.iAmPublic));
-//      });
-//      
-//      test('ContainsStatic', () {
-//        var object = new ContainsStatic();
-//        
-//        // The call under test
-//        var json = objectToJson(object);
-//        var map = JSON.parse(json);
-//        
-//        expect(map.keys.length,equals(1));
-//        expect(map["iAmStatic"], isNull);
-//        expect(map["iAmInstance"], equals(object.iAmInstance));
-//      });
-//      
-//      test('ContainsMethods', () {
-//        var object = new ContainsMethods();
-//        
-//        // The call under test
-//        var json = objectToJson(object);
-//        var map = JSON.parse(json);
-//        
-//        expect(map.keys.length,equals(1));
-//        expect(map["field"], equals(object.field));
-//      });
+      test('ContainsStatic', () {
+        var object = new ContainsStatic();
+        
+        // The call under test
+        var future = objectToJson(object);
+        
+        var expectation = new Map();
+        
+        expectation["iAmStatic"] = null;
+        expectation["iAmInstance"] = object.iAmInstance;
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
+      
+      test('ContainsMethods', () {
+        var object = new ContainsMethods();
+        
+        // The call under test
+        var future = objectToJson(object);
+        
+        var expectation = new Map();
+        
+        expectation["field"] = object.field;
+        
+        expect(future, completion(new JsonMapMatcher(expectation)));
+      });
     });
-
     
   });
   
@@ -542,10 +645,18 @@ class JsonMapMatcher implements Matcher {
   bool matches(String item, MatchState matchState) {
     var result = true;
     print("matcher before JSON: $item");
-    var map = JSON.parse(item);
-    print("matcher after JSON: $item");
+    print("matcher after JSON:  $item");
+    print("matcher map:         ${JSON.stringify(_map)}");
     
-    return _mapsAreEqual(map, _map);
+    if (JSON.stringify(_map) == item) {
+      // if the map and item are equal, then pass
+      return true;
+    }
+    else {
+      var map = JSON.parse(item);
+      // try and compare the item and the map
+      return _mapsAreEqual(map, _map);       
+    }
   }
   
   Description describe(Description description) {
@@ -596,12 +707,12 @@ class JsonMapMatcher implements Matcher {
       if (one[k] != v) {
         
         if (v is List) {
-          if (!_listsAreEqual(one[k], v)) {
+          if (!_listsAreEqual(two[k], v)) {
             result = false;
           }
         }
         else if (v is Map) {
-          if (!_mapsAreEqual(one[k], v)) {
+          if (!_mapsAreEqual(two[k], v)) {
             result = false;
           }
         }

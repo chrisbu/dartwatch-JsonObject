@@ -11,24 +11,23 @@ Now *M3* compatible.
 
 All tests passing with build 17328
 
-You can use JsonObject in two different ways.  is the objectToJson method
-which uses reflection to convert an object into json.  The other is two-way 
-conversion of JSON into a class.
+You can use JsonObject in two different ways.  
 
-## Using reflection to serialize
+## 1. Using reflection to serialize from a real class instance to Json
 
-Serialize to JSON with reflection is currently not working fully.
-`objectToJson` is now returns a future.  It can currently be used 
-to serialize objects, or lists / maps of objects that contain simple fields and 
-getters that return string / num / bool (rather than other embedded objects). 
-(That's next on the todo list). 
+Use `objectToJson(myObj)` to return a future containing the serialized string.
 
 Example:
-    import 'package: 
+    import 'package:json_object/json_object.dart'; 
+   
+   	class Other {
+   		String name = "My Name";
+   	}
    
     class Basic {
        String myString = "foo";
        int myInt = 42;
+       Other name = new Other();
     }
     
     main() {
@@ -38,19 +37,20 @@ Example:
   
 ----
 
-## Accessing JSON Maps in a class-based fashion
+## 2 Accessing JSON Maps in a class-based fashion
 
 Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
 
-Takes a json string representation, and uses dart:json to parse it.
-From the parsed output, it converts any maps (recursively) into 
+JsonObject takes a json string representation, and uses the `dart:json` library to parse 
+it back into a map.  JsonObject then takes the parsed output, 
+and converts any maps (recursively) into 
 JsonObjects, which allow use of dot notation for property access 
-(via noSuchMethod).    Also allows creating an empty object and populating
-it using dot notation.
+(via `noSuchMethod`).    
 
-For example:
+Examples:
 
-    var person = new JsonObject('{"name":"Chris"}');
+    // create from existing JSON
+    var person = new JsonObject.fromJsonString('{"name":"Chris"}');
     print(person.name);
     person.name = "Chris B";
     person.namz = "Bob"; //throws an exception, as it wasn't in the original json
@@ -58,16 +58,22 @@ For example:
                           
     person.isExtendable = true;
     person.namz = "Bob" //this is allowed now
-    
+    String jsonString = JSON.stringify(person); // convert back to JSON
+
 It implements Map, so you can convert it back to Json using JSON.stringify():
     
-    var person = new JsonObject();
-    person.name = "Chris";
-    person.languages = ["Dart","Java"];
-    var json = JSON.stringify(person);
+    // starting from an empty map
+    var animal = new JsonObject();  
+    animal.legs = 4;  // equivalent to animal["legs"] = 4;
+    animal.name = "Fido"; // equivalent to animal["name"] = "Fido";
+    String jsonString = JSON.stringify(animal); // convert to JSON
+    
 
 Take a look at the unit tests to get an idea of how you can use it.
 
 
 TODO:
 * I still feel that there aren't enough tests - let me know if it works for you.
+
+Many of the unit tests are based around specific questions from users, 
+either here or on stack overflow.
