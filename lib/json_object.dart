@@ -7,6 +7,10 @@
 library json_object;
 
 import "dart:json" as JSON;
+import "dart:async";
+import 'dart:mirrors' as mirrors;
+
+part "src/mirror_based_serializer.dart";
 
 var enableJsonObjectDebugMessages = false;
 void _log(obj) { 

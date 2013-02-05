@@ -1,7 +1,4 @@
-// part of json_object_test;
-import '../lib/src/mirror_based_serializer.dart';
-import "dart:json" as JSON;
-import "package:unittest/unittest.dart";
+part of json_object_test;
 
 // classes that we will try and serialize
 class Basic {
