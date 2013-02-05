@@ -1,9 +1,7 @@
 name: json_object
-version: 1.0.7
-description: > 
-  Allow use of JSON Maps in dot notation format, and serializes real objects to
-  JSON using reflection  
+version: 1.0.8
 author: Chris Buckett <chrisbuckett@gmail.com>
+description: Allow use of JSON Maps in dot notation format, and serializes real objects to JSON using reflection
 homepage: https://github.com/chrisbu/dartwatch-JsonObject
 dependencies:
   unittest: any

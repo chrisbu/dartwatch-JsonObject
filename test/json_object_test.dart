@@ -3,6 +3,7 @@ library json_object_test;
 import "package:unittest/unittest.dart"; 
 
 import "../lib/json_object.dart";
+
 import "dart:json" as JSON;
 
 part "test_strong_typing.dart";
@@ -13,7 +14,7 @@ part "test_extend_object.dart";
 part "test_to_string.dart";
 part "test_dartlang_article.dart";
 part "test_todo_vo.dart";
-part "test_mirrors_serialize.dart";
+// part "test_mirrors_serialize.dart";
 part "test_list.dart";
 
 void main() {  
@@ -76,7 +77,7 @@ void main() {
    });
    
 
-   testMirrorsSerialize(); // tests converting a class to JSON
+//   testMirrorsSerialize(); // tests converting a class to JSON
 }
 
 

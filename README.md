@@ -9,35 +9,11 @@ Usage: Add to pubspec.yaml:
 
 Now *M3* compatible.
 
-All tests passing with build 17328
+All tests passing with build **17657**
 
 You can use JsonObject in two different ways.  
 
-## 1. Using reflection to serialize from a real class instance to Json
-
-Use `objectToJson(myObj)` to return a future containing the serialized string.
-
-Example:
-    import 'package:json_object/json_object.dart'; 
-   
-   	class Other {
-   		String name = "My Name";
-   	}
-   
-    class Basic {
-       String myString = "foo";
-       int myInt = 42;
-       Other name = new Other();
-    }
-    
-    main() {
-      var basic = new Basic();
-      objectToJson(basic).then((jsonStr) => print(jsonStr));
-    }
-  
-----
-
-## 2 Accessing JSON Maps in a class-based fashion
+## 1 Accessing JSON Maps in a class-based fashion
 
 Read the article about using this on the dartlang website: http://www.dartlang.org/articles/json-web-service/
 
@@ -70,6 +46,41 @@ It implements Map, so you can convert it back to Json using JSON.stringify():
     
 
 Take a look at the unit tests to get an idea of how you can use it.
+
+---- 
+
+## 2. Experimental :Using reflection to serialize from a real class instance to JSON
+
+(Requires use of a the experimental `mirrors` branch)
+
+    dependencies:
+      json_object:
+        git:
+          url: git://github.com/chrisbu/dartwatch-JsonObject.git
+          ref: mirrors
+
+Use `objectToJson(myObj)` to return a future containing the serialized string.
+
+Example:
+    import 'package:json_object/json_object.dart'; 
+   
+   	class Other {
+   		String name = "My Name";
+   	}
+   
+    class Basic {
+       String myString = "foo";
+       int myInt = 42;
+       Other name = new Other();
+    }
+    
+    main() {
+      var basic = new Basic();
+      objectToJson(basic).then((jsonStr) => print(jsonStr));
+    }
+  
+----
+
 
 
 TODO:

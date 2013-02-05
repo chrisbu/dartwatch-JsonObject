@@ -7,35 +7,6 @@
 library json_object;
 
 import "dart:json" as JSON;
-import "dart:async";
-import "dart:mirrors" as mirrors;
-
-part "src/mirror_based_serializer.dart"; // see test_mirrors.dart for examples
-
-/// Uses mirror based reflection to convert the object passed in to a string
-/// of json.  The object passed in may be any object, list or map.
-/// see test_mirrors.dart for examples.
-Future<String> objectToJson(Object object) {
-  var completer = new Completer<String>();
-  
-  var onSuccess = (value) {
-    print("About to stringify: $value");
-    var string = JSON.stringify(value);
-    completer.complete(string);
-  };
-  var onError = (AsyncError error) {
-    print("JsonObject Future Error: $object");
-    print("Object: ${object.runtimeType}");
-    print("Stringified: ${JSON.stringify(object)}");
-    completer.completeError(error, error.stackTrace);
-  };
-  
-  objectToSerializable(object).then(onSuccess, onError:onError);
-  
-  return completer.future;
-  
-}
-
 
 /// JsonObject allows .property name access to JSON by using
 /// noSuchMethod.  
