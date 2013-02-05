@@ -14,6 +14,7 @@ part "test_extend_object.dart";
 part "test_to_string.dart";
 part "test_dartlang_article.dart";
 part "test_todo_vo.dart";
+part "test_print_list.dart";
 // part "test_mirrors_serialize.dart";
 part "test_list.dart";
 
@@ -76,7 +77,9 @@ void main() {
    test('list', () {
      print(9);
      testList();
+     testPrintList();
    });
+      
    
 
 //   testMirrorsSerialize(); // tests converting a class to JSON
