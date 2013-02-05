@@ -8,6 +8,11 @@ library json_object;
 
 import "dart:json" as JSON;
 
+var enableJsonObjectDebugMessages = false;
+void _log(obj) { 
+  if (enableJsonObjectDebugMessages) print(obj);
+}
+
 /// JsonObject allows .property name access to JSON by using
 /// noSuchMethod.  
 ///
@@ -87,8 +92,6 @@ class JsonObject extends Object implements Map {
   ///If isExtendable = true, then it will allow the property access
   ///even if the property doesn't yet exist.
   noSuchMethod(InvocationMirror mirror) {
-  //noSuchMethod(String function_name, List args) {
-    // print("Called: ${mirror.memberName} with ${mirror.positionalArguments}");
     int positionalArgs = 0;
     if (mirror.positionalArguments != null) positionalArgs = mirror.positionalArguments.length;
     
@@ -109,10 +112,10 @@ class JsonObject extends Object implements Map {
     }
 
     //if we get here, then we've not found it - throw.
-    print("Not found: ${mirror.memberName}");
-    print("IsGetter: ${mirror.isGetter}");
-    print("IsSetter: ${mirror.isGetter}");
-    print("isAccessor: ${mirror.isAccessor}");
+    _log("Not found: ${mirror.memberName}");
+    _log("IsGetter: ${mirror.isGetter}");
+    _log("IsSetter: ${mirror.isGetter}");
+    _log("isAccessor: ${mirror.isAccessor}");
     super.noSuchMethod(mirror);
   }
 

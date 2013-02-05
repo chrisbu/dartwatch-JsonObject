@@ -17,7 +17,9 @@ part "test_todo_vo.dart";
 // part "test_mirrors_serialize.dart";
 part "test_list.dart";
 
-void main() {  
+void main() { 
+  enableJsonObjectDebugMessages = true;
+  
   test('sample data', () {
     print(1);
     testSampleData(); // passes build 14458
