@@ -24,12 +24,7 @@ class JsonObject extends Object implements Map {
   var _objectData;
 
   toString() {
-    if (_objectData is List) {
       return JSON.stringify(_objectData);
-    }
-    else {
-      JSON.stringify(this);
-    }
   }
 
   ///[isExtendable] decides if a new item can be added to the internal

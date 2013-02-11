@@ -1,5 +1,5 @@
 
-part of json_object_test.dart;
+part of json_object_test;
 
 // github: issue 15
 

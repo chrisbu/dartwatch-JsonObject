@@ -15,6 +15,7 @@ part "test_to_string.dart";
 part "test_dartlang_article.dart";
 part "test_todo_vo.dart";
 part "test_print_list.dart";
+part "test_list_serialization.dart";
 // part "test_mirrors_serialize.dart";
 part "test_list.dart";
 
@@ -54,7 +55,7 @@ void main() {
 
   test('toString', () {
     print(6);
-   testToString(); // passes build 14458
+    testToString(); // passes build 14458
   });
   
   group('dartlang article', () {
@@ -78,6 +79,10 @@ void main() {
      print(9);
      testList();
      testPrintList();
+   });
+   
+   test('list seralization', () {
+     testListSerialization();
    });
       
    
