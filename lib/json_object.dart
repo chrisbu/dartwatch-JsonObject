@@ -177,8 +177,8 @@ class JsonObject extends Object implements Map {
   bool containsKey(value) => _objectData.containsKey(value);
   operator [](key) => _objectData[key];
   forEach(func(key,value)) => _objectData.forEach(func);
-  Collection get keys => _objectData.keys;
-  Collection get values => _objectData.values;
+  Iterable get keys => _objectData.keys;
+  Iterable get values => _objectData.values;
   int get length => _objectData.length;
   bool get isEmpty => _objectData.isEmpty;
 
