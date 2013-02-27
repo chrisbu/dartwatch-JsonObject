@@ -1,59 +1,71 @@
-// (C) 2012 Chris Buckett (chrisbuckett@gmail.com)
-// Released under the MIT licence
-// See LICENCE file
-// http://github.com/chrisbu/dartwatch-JsonObject
+/* (C) 2012 Chris Buckett (chrisbuckett@gmail.com)
+ * Released under the MIT licence
+ * See LICENCE file
+ * http://github.com/chrisbu/dartwatch-JsonObject
+ */
 
 
 library json_object;
 
 import "dart:json" as JSON;
 
+// Set to true to as required
 var enableJsonObjectDebugMessages = false;
 void _log(obj) { 
   if (enableJsonObjectDebugMessages) print(obj);
 }
 
-/// JsonObject allows .property name access to JSON by using
-/// noSuchMethod.  
-///
-/// When used with the generic type annotation, 
-/// it uses Dart's mirror system to return a real instance of 
-/// the specified type.
+/** JsonObject allows .property name access to JSON by using
+ * noSuchMethod.  
+ *
+ * When used with the generic type annotation, 
+ * it uses Dart's mirror system to return a real instance of 
+ * the specified type.
+ */
 class JsonObject extends Object implements Map {
+  /// The original JSON string
   var _jsonString;
-  var _objectData;
+  
+  /// Contains either a [List] or [Map]
+  var _objectData; 
 
+  /**
+   * Returns a [JSON.stringify] representation of the underlying object data
+   */
   toString() {
       return JSON.stringify(_objectData);
   }
 
-  ///[isExtendable] decides if a new item can be added to the internal
-  ///map via the noSuchMethod property, or the functions inherited from the
-  ///map interface.
-  ///
-  ///If set to false, then only the properties that were
-  ///in the original map or json string passed in can be used.
-  ///
-  ///If set to true, then calling o.blah="123" will create a new blah property
-  ///if it didn't already exist.
-  ///
-  ///Setting this to false can help with checking for typos, and is false by
-  ///default when a JsonObject is created with [JsonObject.fromJsonString()]
-  ///or [JsonObject.fromMap()].
-  ///The default constructor [JsonObject()], however will set this value to
-  ///true, otherwise you can't actually add any new properties.
+  /** [isExtendable] decides if a new item can be added to the internal
+   * map via the noSuchMethod property, or the functions inherited from the
+   * map interface.
+   * 
+   * If set to false, then only the properties that were
+   * in the original map or json string passed in can be used.
+   * 
+   * If set to true, then calling o.blah="123" will create a new blah property
+   * if it didn't already exist.
+   *
+   * Setting this to false can help with checking for typos, and is false by
+   * default when a JsonObject is created with [JsonObject.fromJsonString()]
+   * or [JsonObject.fromMap()].
+   * The default constructor [JsonObject()], however will set this value to
+   * true, otherwise you can't actually add any new properties.
+   */
   bool isExtendable;
 
-  // default constructor.
-  // creates a new empty map.
+  /** default constructor.
+   * creates a new empty map.
+   */ 
   JsonObject() {
     _objectData = new Map();
     isExtendable = true;
   }
   
-  /// eager constructor parses the jsonString using
-  /// JSON.parse(), and
-  /// replaces all maps recursively with JsonObjects
+  /** eager constructor parses the jsonString using
+   *  [JSON.parse()], and
+   *  replaces all maps recursively with JsonObjects
+   */ 
   factory JsonObject.fromJsonString(String _jsonString, [JsonObject t]) {
     if (t == null) {
       t = new JsonObject();
@@ -66,8 +78,9 @@ class JsonObject extends Object implements Map {
 
   }
 
-  ///An alternate constructor, allows creating directly from a map
-  ///rather than a json string.
+  /** An alternate constructor, allows creating directly from a map
+   * rather than a json string.
+   */
   JsonObject.fromMap(Map map) {
     _jsonString = JSON.stringify(map);
     _objectData = map;
@@ -82,17 +95,18 @@ class JsonObject extends Object implements Map {
     return dest;
   }
 
-  ///noSuchMethod() is where the magic happens.
-  ///If we try to access a property using dot notation (eg: o.wibble ), then
-  ///noSuchMethod will be invoked, and identify the getter or setter name.
-  ///It then looks up in the map contained in _objectData (represented using
-  ///this (as this class implements [Map], and forwards it's calls to that
-  ///class.
-  ///If it finds the getter or setter then it either updates the value, or
-  ///replaces the value.
-  ///
-  ///If isExtendable = true, then it will allow the property access
-  ///even if the property doesn't yet exist.
+  /** noSuchMethod() is where the magic happens.
+   * If we try to access a property using dot notation (eg: o.wibble ), then
+   * noSuchMethod will be invoked, and identify the getter or setter name.
+   * It then looks up in the map contained in _objectData (represented using
+   * this (as this class implements [Map], and forwards it's calls to that
+   * class.
+   * If it finds the getter or setter then it either updates the value, or
+   * replaces the value.
+   * 
+   * If isExtendable = true, then it will allow the property access
+   * even if the property doesn't yet exist.
+   */
   noSuchMethod(InvocationMirror mirror) {
     int positionalArgs = 0;
     if (mirror.positionalArguments != null) positionalArgs = mirror.positionalArguments.length;
@@ -121,17 +135,18 @@ class JsonObject extends Object implements Map {
     super.noSuchMethod(mirror);
   }
 
-  ///Private:
-  ///If the [data] object passed in is a MAP, then we iterate through each of
-  ///the values of the map, and if any value is a map, then we create a new
-  ///[JsonObject] replacing that map in the original data with that [JsonObject]
-  ///to a new [JsonObject].  If the value is a Collection, then we call this
-  ///function recursively.
-  ///
-  ///If the [data] object passed in is a Collection, then we iterate through
-  ///each item.  If that item is a map, then we replace the item with a
-  ///[JsonObject] created from the map.  If the item is a Collection, then we
-  ///call this function recursively.
+  /** 
+   * If the [data] object passed in is a MAP, then we iterate through each of
+   * the values of the map, and if any value is a map, then we create a new
+   * [JsonObject] replacing that map in the original data with that [JsonObject]
+   * to a new [JsonObject].  If the value is a Collection, then we call this
+   * function recursively.
+   * 
+   * If the [data] object passed in is a Collection, then we iterate through
+   * each item.  If that item is a map, then we replace the item with a
+   * [JsonObject] created from the map.  If the item is a Collection, then we
+   * call this function recursively.
+   */
   _extractElements(data) {
     if (data is Map) {
       //iterate through each of the k,v pairs, replacing maps with jsonObjects
@@ -170,25 +185,45 @@ class JsonObject extends Object implements Map {
   
   
 
-  //***************************************************************************
-  //*** Map implementation methods and properties ***
-  //Pass through to the inner _objectData map.
+  /***************************************************************************
+   * Map implementation methods and properties *
+   * 
+   */
+  
+  // Pass through to the inner _objectData map.
   bool containsValue(value) => _objectData.containsValue(value);
+  
+  // Pass through to the inner _objectData map.
   bool containsKey(value) => _objectData.containsKey(value);
+  
+  // Pass through to the inner _objectData map.
   operator [](key) => _objectData[key];
+  
+  // Pass through to the inner _objectData map.
   forEach(func(key,value)) => _objectData.forEach(func);
+  
+  // Pass through to the inner _objectData map.
   Iterable get keys => _objectData.keys;
+  
+  // Pass through to the inner _objectData map.
   Iterable get values => _objectData.values;
+  
+  // Pass through to the inner _objectData map.
   int get length => _objectData.length;
+  
+  // Pass through to the inner _objectData map.
   bool get isEmpty => _objectData.isEmpty;
 
-  //Specific implementations which check isExtendable to determine if an
-  //unknown key should be allowed
-
-  ///If [isExtendable] is true, or the key already exists,
-  ///then allow the edit.
-  ///Throw [JsonObjectException] if we're not allowed to add a new
-  ///key
+  /** 
+   * Specific implementations which check isExtendable to determine if an
+   *
+   * unknown key should be allowed
+   * 
+   * If [isExtendable] is true, or the key already exists,
+   * then allow the edit.
+   * Throw [JsonObjectException] if we're not allowed to add a new
+   * key
+   */
   operator []=(key,value) {
     //if the map isExtendable, or it already contains the key, then
     if (this.isExtendable == true || this.containsKey(key)) {
@@ -200,10 +235,11 @@ class JsonObject extends Object implements Map {
     }
   }
 
-  ///If [isExtendable] is true, or the key already exists,
-  ///then allow the edit.
-  ///Throw [JsonObjectException] if we're not allowed to add a new
-  ///key
+  /** If [isExtendable] is true, or the key already exists,
+   * then allow the edit.
+   * Throw [JsonObjectException] if we're not allowed to add a new
+   * key
+   */
   putIfAbsent(key,ifAbsent()) {
     if (this.isExtendable == true || this.containsKey(key)) {
       return _objectData.putIfAbsent(key, ifAbsent);
@@ -213,10 +249,11 @@ class JsonObject extends Object implements Map {
     }
   }
 
-  ///If [isExtendable] is true, or the key already exists,
-  ///then allow the removal.
-  ///Throw [JsonObjectException] if we're not allowed to remove a
-  ///key
+  /** If [isExtendable] is true, or the key already exists,
+   * then allow the removal.
+   * Throw [JsonObjectException] if we're not allowed to remove a
+   * key
+   */
   remove(key) {
     if (this.isExtendable == true || this.containsKey(key)) {
       return _objectData.remove(key);
@@ -226,8 +263,9 @@ class JsonObject extends Object implements Map {
     }
   }
 
-  ///If [isExtendable] is true, then allow the map to be cleared
-  ///Throw [JsonObjectException] if we're not allowed to clear.
+  /** If [isExtendable] is true, then allow the map to be cleared
+   * Throw [JsonObjectException] if we're not allowed to clear.
+   */
   clear() {
     if (this.isExtendable == true) {
       _objectData.clear();
@@ -235,12 +273,12 @@ class JsonObject extends Object implements Map {
     else {
       throw new JsonObjectException("JsonObject is not extendable");
     }
-
   }
-
 }
 
-
+/**
+ * Exception class thrown by JSON Object
+ */
 class JsonObjectException implements Exception {
   const JsonObjectException([String message]) : this._message = message;
   String toString() => (this._message != null
