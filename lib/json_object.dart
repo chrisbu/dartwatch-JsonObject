@@ -22,7 +22,7 @@ void _log(obj) {
  * it uses Dart's mirror system to return a real instance of 
  * the specified type.
  */
-class JsonObject extends Object implements Map {
+class JsonObject extends Object implements Map, Iterable {
   /// The original JSON string
   var _jsonString;
   
@@ -34,6 +34,26 @@ class JsonObject extends Object implements Map {
    */
   toString() {
       return JSON.stringify(_objectData);
+  }
+  
+  /**
+   * Returns either the underlying parsed data as an iterable list (if the 
+   * underlying data contains a list), or returns the map.values (if the 
+   * underlying data contains a map).
+   * 
+   * Returns an empty list if neither of the above is true. 
+   */
+  Iterable toIterable() {
+    if (_objectData is Iterable) {
+      return _objectData;
+    }
+    else if (_objectData is Map) {
+      return _objectData.values;
+    }
+    else {
+      return new List(); // return an empty list, rather than return null
+      
+    }
   }
 
   /** [isExtendable] decides if a new item can be added to the internal
@@ -183,6 +203,61 @@ class JsonObject extends Object implements Map {
 
   }
   
+  /***************************************************************************
+   * List implementation methods and properties *
+   */
+  
+  // pass through to the underlying iterator  
+  Iterator<E> get iterator => this.toIterable().iterator;
+  
+  Iterable map(f(E element)) => this.toIterable().map(f);
+  
+  Iterable<E> where(bool f(E element)) => this.toIterable().where(f);
+  
+  Iterable expand(Iterable f(E element)) => this.toIterable().expand(f);
+  
+  bool contains(E element) => this.toIterable().contains(element);
+  
+  dynamic reduce(var initialValue,
+       dynamic combine(var previousValue, E element)) => this.toIterable().reduce(initialValue, combine);
+  
+  bool every(bool f(E element)) => this.toIterable().every(f);
+  
+  String join([String separator]) => this.toIterable().join(separator);
+  
+  bool any(bool f(E element)) => this.toIterable().any(f);
+  
+  E min([int compare(E a, E b)]) => this.toIterable().min(compare);
+  
+  E max([int compare(E a, E b)]) => this.toIterable().max(compare);
+  
+  Iterable<E> take(int n) => this.toIterable().take(n);
+  
+  Iterable<E> takeWhile(bool test(E value)) => this.toIterable().takeWhile(test);
+  
+  Iterable<E> skip(int n) => this.toIterable().skip(n);
+  
+  Iterable<E> skipWhile(bool test(E value)) => this.toIterable().skipWhile(test);
+  
+  E get first => this.toIterable().first;
+  
+  E get last => this.toIterable().last;
+  
+  E get single => this.toIterable().single;
+  
+  E firstMatching(bool test(E value), { E orElse() }) {
+    if (?orElse) this.toIterable().firstMatching(test, orElse: orElse);
+    else this.toIterable().firstMatching(test);
+  }
+  
+  E lastMatching(bool test(E value), {E orElse()}) {
+    if (?orElse) this.toIterable().lastMatching(test, orElse: orElse);
+    else this.toIterable().lastMatching(test);
+  }
+  
+  E singleMatching(bool test(E value)) => this.toIterable().singleMatching(test);
+  
+  E elementAt(int index) => this.toIterable().elementAt(index);
   
 
   /***************************************************************************
@@ -200,7 +275,7 @@ class JsonObject extends Object implements Map {
   operator [](key) => _objectData[key];
   
   // Pass through to the inner _objectData map.
-  forEach(func(key,value)) => _objectData.forEach(func);
+  forEach(func) => _objectData.forEach(func);
   
   // Pass through to the inner _objectData map.
   Iterable get keys => _objectData.keys;

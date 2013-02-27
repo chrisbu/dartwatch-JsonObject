@@ -78,6 +78,7 @@ void main() {
    test('list', () {
      print(9);
      testList();
+     testListIterator();
      testPrintList();
    });
    
