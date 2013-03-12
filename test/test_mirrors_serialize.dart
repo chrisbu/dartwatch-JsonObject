@@ -171,12 +171,12 @@ class ContainsObjectMap {
 // Main test method
 
 testMirrorsSerialize() {
-  var obj = new ContainsSimpleObject();
-  objectToJson(obj).then((string) => print("--> $string"));
-  
-  
   
   group('mirrors:', () {
+    var obj = new ContainsSimpleObject();
+    test('ContainsSimpleObject', () =>
+        objectToJson(obj).then((string) => print("--> $string"))
+    );
     
     /* There are two types of objects: 
      1. Those that contain ONLY 
@@ -191,30 +191,35 @@ testMirrorsSerialize() {
       test('string', () {
         var val = "String";
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('bool', () {
         var val = true;
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('num', () {
         var val = 123;
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('double', () {
         var val = 123.45;
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('null', () {
         var val = null;
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
@@ -225,42 +230,49 @@ testMirrorsSerialize() {
       test('string', () {
         var val = ["String","String2"];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('bool', () {
         var val = [true,false];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('num', () {
         var val = [123,456];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('double', () {
         var val = [123.45,6.789];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('null', () {
         var val = [null,null];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('mixed', () {
         var val = ["String",true,123,35.6,null];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));        
       });
       
       test('list', () {
         var val = [[1,2],["a","b"]];
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(JSON.stringify(val)));
       });
       
@@ -271,42 +283,49 @@ testMirrorsSerialize() {
       test('string', () {
         var val = {"key1":"string1","key2":"string2"};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));        
       });
       
       test('bool', () {
         var val = {"key1":true,"key2":false};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));        
       });
       
       test('num', () {
         var val = {"key1":123,"key2":456};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));        
       });
       
       test('double', () {
         var val = {"key1":123.45,"key2":456.78};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));        
       });
       
       test('null', () {
         var val = {"key1":null,"key2":null};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));        
       });
       
       test('mixed', () {
         var val = {"key1":"string","key2":true,"key3":123,"key4":123.45,"key5":null};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));        
       });
       
       test('list', () {
         var val = {"list1":[1,2]};
         var future = objectToJson(val);
+        future.catchError((error) => registerException(error));
         expect(future, completion(new JsonMapMatcher(val)));
       });
       
@@ -319,6 +338,7 @@ testMirrorsSerialize() {
         // Test a class that contains basic type fields
         var object = new Basic();
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         var expectation = new Map();
         expectation["aString"] = object.aString;
         expectation["aNum"] = object.aNum;
@@ -335,6 +355,7 @@ testMirrorsSerialize() {
         // Test a class that contains lists
         var object = new ContainsBasicList();
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         var expectation = new Map();
           
         expectation["strings"] = object.strings;
@@ -351,6 +372,7 @@ testMirrorsSerialize() {
         // Test a class that contains maps
         var object = new ContainsBasicMap();
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         var expectation = new Map();
           
         expectation["strings"] = object.strings;
@@ -368,6 +390,7 @@ testMirrorsSerialize() {
         // Test a class that contains a child object
         var object = new ContainsSimpleObject();
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         var expectation = new Map();
         expectation["anObject"] = new Map(); 
         expectation["anObject2"] = new Map();
@@ -380,6 +403,7 @@ testMirrorsSerialize() {
         // Test a class that contains a child object
         var object = new ContainsObject();
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         var expectation = new Map();
         expectation["aString"] = object.aString;
         expectation["basic"] = new Map();
@@ -398,6 +422,7 @@ testMirrorsSerialize() {
         // Test a class that has a list of child objects
         var object = new ContainsObjectList();
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         expectation["aString"] = object.aString;
@@ -430,6 +455,7 @@ testMirrorsSerialize() {
         
         // The call under test
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
@@ -482,6 +508,7 @@ testMirrorsSerialize() {
           
           // The call under test
           var future = objectToJson(list);
+          future.catchError((error) => registerException(error));
           
           var expectation = new List();
           expectation.add(new Map());
@@ -513,6 +540,7 @@ testMirrorsSerialize() {
 
         // The call under test
         var future = objectToJson(map);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
@@ -543,6 +571,7 @@ testMirrorsSerialize() {
         
         // The call under test
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
@@ -562,6 +591,7 @@ testMirrorsSerialize() {
         
         // The call under test
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
@@ -585,6 +615,7 @@ testMirrorsSerialize() {
         
         // The call under test
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
@@ -599,6 +630,7 @@ testMirrorsSerialize() {
         
         // The call under test
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
@@ -613,6 +645,7 @@ testMirrorsSerialize() {
         
         // The call under test
         var future = objectToJson(object);
+        future.catchError((error) => registerException(error));
         
         var expectation = new Map();
         
