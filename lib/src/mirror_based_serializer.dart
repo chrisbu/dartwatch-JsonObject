@@ -1,9 +1,4 @@
-library json_object_mirrors;
-
-// part of json_object;
-import "dart:json" as JSON;
-import "dart:async";
-import 'dart:mirrors' as mirrors;
+part of json_object;
 
 /// Uses mirror based reflection to convert the object passed in to a string
 /// of json.  The object passed in may be any object, list or map.
@@ -12,14 +7,15 @@ Future<String> objectToJson(Object object) {
   var completer = new Completer<String>();
   
   var onSuccess = (value) {
-    print("About to stringify: $value");
+    _log("About to stringify: $value");
     var string = JSON.stringify(value);
     completer.complete(string);
   };
+
   var onError = (AsyncError error) {
-    print("JsonObject Future Error: $object");
-    print("Object: ${object.runtimeType}");
-    print("Stringified: ${JSON.stringify(object)}");
+    _log("JsonObject Future Error: $object");
+    _log("Object: ${object.runtimeType}");
+    _log("Stringified: ${JSON.stringify(object)}");
     completer.completeError(error, error.stackTrace);
   };
   
@@ -43,10 +39,7 @@ class _KeyValuePair {
 Future objectToSerializable(Object object, [key=null]) {
   var completer = new Completer();
     
-  if (object is num || 
-      object is bool || 
-      object is String || 
-      object == null) {
+  if (isPrimative(object)) {
     _serializeNative(object, completer, key);
   }
   else if (object is Map) {
@@ -64,14 +57,25 @@ Future objectToSerializable(Object object, [key=null]) {
   return completer.future;
 }
 
+bool isPrimative(Object object){
+  if (object is num || 
+      object is bool || 
+      object is String || 
+      object == null) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void _serializeNative(Object object, Completer completer, key) {
-   print("native: $object");
+  _log("native: $object");
   // "native" object types - just complete with that type
   _complete(completer,object,key);
 }
 
 void _serializeMap(Map object, Completer completer, key) {
-  print("map: $object");
+  _log("map: $object");
   
   // convert the map into a serialized map
   // each value in the map may itself be a complex object or a "native" type.
@@ -97,7 +101,7 @@ void _serializeMap(Map object, Completer completer, key) {
 }
 
 void _serializeList(List object, Completer completer, key) {
-   print("list: $object");
+  _log("list: $object");
   
   // each item in the list will be an object to serialize.
   List<Future> listItemsToComplete = new List<Future>();
@@ -113,7 +117,7 @@ void _serializeList(List object, Completer completer, key) {
 }
 
 void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer, key) {
-  print("object: $instanceMirror");
+  _log("object: $instanceMirror");
   var classMirror = instanceMirror.type;
   
   var resultMap = new Map();
@@ -122,20 +126,27 @@ void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer
     // for each getter:
    classMirror.getters.forEach((getterKey, getter) {
       if (!getter.isPrivate && !getter.isStatic) {
-        print("getter: ${getter.qualifiedName}");
+        _log("getter: ${getter.qualifiedName}");
         var futureField = instanceMirror.getField(getterKey);
-        print("got future field: $futureField");
-        
-        var onGetFutureFieldSuccess = (instanceMirrorField) {
-          print("Got reflecteee for $getterKey: ${instanceMirrorField.reflectee}");
-          resultMap[getterKey] = instanceMirrorField.reflectee;
-        };
-        
+        _log("got future field: $futureField");
+
         var onGetFutureFieldError = (error) {
-          print("Error: $error");
-          completer.complete(error);
+          _log("Error: $error");
+          completer.completeError(error);
         };
-        
+
+        var onGetFutureFieldSuccess = (mirrors.InstanceMirror instanceMirrorField) {
+          Object reflectee = instanceMirrorField.reflectee;
+          _log("Got reflectee for $getterKey: ${reflectee}");
+          if (isPrimative(reflectee)){
+            resultMap[getterKey] = reflectee;
+          } else {
+            Future<String> recursed = objectToJson(reflectee).catchError(onGetFutureFieldError);
+            recursed.then((json) => resultMap[getterKey] = json);
+            futuresList.add(recursed);
+          }
+        };
+
         futureField.then(onGetFutureFieldSuccess, onError:onGetFutureFieldError);
         futuresList.add(futureField);
       }
@@ -145,13 +156,20 @@ void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer
     classMirror.variables.forEach((varKey, variable) {
       if (!variable.isPrivate && !variable.isStatic) {
         var futureField = instanceMirror.getField(varKey);
-        
-        var onGetFutureFieldSuccess = (instanceMirrorField) {
-          print("Got reflecteee for $varKey: ${instanceMirrorField.reflectee}");
-          resultMap[varKey] = instanceMirrorField.reflectee;
+
+        var onGetFutureFieldError = (error) => completer.completeError(error);
+
+        var onGetFutureFieldSuccess = (mirrors.InstanceMirror instanceMirrorField) {
+          Object reflectee = instanceMirrorField.reflectee;
+          _log("Got reflectee for $varKey: ${reflectee}");
+          if (isPrimative(reflectee)){
+            resultMap[varKey] = reflectee;
+          } else {
+            Future<String> recursed = objectToJson(reflectee).catchError(onGetFutureFieldError);
+            recursed.then((json) => resultMap[varKey] = json);
+            futuresList.add(recursed);
+          }
         };
-        
-        var onGetFutureFieldError = (error) => completer.complete(error);
         
         futureField.then(onGetFutureFieldSuccess, onError:onGetFutureFieldError);
         futuresList.add(futureField);
@@ -167,7 +185,7 @@ void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer
   
 }
 
-void _complete(completer, object, key) {
+void _complete(Completer completer, object, key) {
   if (key != null) {      
     completer.complete(new _KeyValuePair(key,object)); // complete, because we can't reflect any deeper
   }

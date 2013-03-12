@@ -4,7 +4,7 @@ part of json_object_test;
 testToString() {
   var user = new User();
   user.name = "Mike";
-  print(user.toString());
+  _log(user.toString());
   expect(user.toString(),equals('{"name":"Mike"}'));
 }
 
