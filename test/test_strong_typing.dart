@@ -26,7 +26,7 @@ testStrongTyping_new() {
 }
 
 testStrongTyping_fromJsonString() {
-  print("testStrongTyping");
+  _log("testStrongTyping");
   var jsonString = _getStrongTypingJsonString();
 
   // Create a new JSON object which looks like our Person

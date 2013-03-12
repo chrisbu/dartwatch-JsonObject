@@ -644,9 +644,9 @@ class JsonMapMatcher implements Matcher {
   // (brute force, innefficient)
   bool matches(String item, MatchState matchState) {
     var result = true;
-    print("matcher before JSON: $item");
-    print("matcher after JSON:  $item");
-    print("matcher map:         ${JSON.stringify(_map)}");
+    _log("matcher before JSON: $item");
+    _log("matcher after JSON:  $item");
+    _log("matcher map:         ${JSON.stringify(_map)}");
     
     if (JSON.stringify(_map) == item) {
       // if the map and item are equal, then pass

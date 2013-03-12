@@ -1,7 +1,7 @@
 part of json_object_test;
 
 bool testSampleData() {
-  print("testSampleData");
+  _log("testSampleData");
   var jsonString = """
       {
         "name" : "Chris",
@@ -62,7 +62,7 @@ bool testSampleData() {
     Expect.stringEquals("+ChrisB",o.handles.googlePlus.name);
     
     for (JsonObject o in o.books) {
-      print(o.chapters);  
+      _log(o.chapters);  
     }
       
        

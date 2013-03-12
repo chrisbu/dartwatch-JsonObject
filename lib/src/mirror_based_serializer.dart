@@ -7,14 +7,15 @@ Future<String> objectToJson(Object object) {
   var completer = new Completer<String>();
   
   var onSuccess = (value) {
-    print("About to stringify: $value");
+    _log("About to stringify: $value");
     var string = JSON.stringify(value);
     completer.complete(string);
   };
+
   var onError = (AsyncError error) {
-    print("JsonObject Future Error: $object");
-    print("Object: ${object.runtimeType}");
-    print("Stringified: ${JSON.stringify(object)}");
+    _log("JsonObject Future Error: $object");
+    _log("Object: ${object.runtimeType}");
+    _log("Stringified: ${JSON.stringify(object)}");
     completer.completeError(error, error.stackTrace);
   };
   
@@ -59,14 +60,25 @@ Future objectToSerializable(Object object, [key=null]) {
   return completer.future;
 }
 
+bool isPrimative(Object object){
+  if (object is num || 
+      object is bool || 
+      object is String || 
+      object == null) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void _serializeNative(Object object, Completer completer, key) {
-   print("native: $object");
+  _log("native: $object");
   // "native" object types - just complete with that type
   _complete(completer,object,key);
 }
 
 void _serializeMap(Map object, Completer completer, key) {
-  print("map: $object");
+  _log("map: $object");
   
   // convert the map into a serialized map
   // each value in the map may itself be a complex object or a "native" type.
@@ -92,7 +104,7 @@ void _serializeMap(Map object, Completer completer, key) {
 }
 
 void _serializeList(List object, Completer completer, key) {
-   print("list: $object");
+  _log("list: $object");
   
   // each item in the list will be an object to serialize.
   List<Future> listItemsToComplete = new List<Future>();
@@ -108,7 +120,7 @@ void _serializeList(List object, Completer completer, key) {
 }
 
 void _serializeObject(mirrors.InstanceMirror instanceMirror, Completer completer, key) {
-  print("object: $instanceMirror");
+  _log("object: $instanceMirror");
   var classMirror = instanceMirror.type;
   
   var resultMap = new Map();
