@@ -1,9 +1,4 @@
-library json_object_mirrors;
-
-// part of json_object;
-import "dart:json" as JSON;
-import "dart:async";
-import 'dart:mirrors' as mirrors;
+part of json_object;
 
 /// Uses mirror based reflection to convert the object passed in to a string
 /// of json.  The object passed in may be any object, list or map.

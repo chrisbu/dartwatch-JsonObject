@@ -8,6 +8,10 @@
 library json_object;
 
 import "dart:json" as JSON;
+import "dart:async";
+import 'dart:mirrors' as mirrors;
+
+part "src/mirror_based_serializer.dart";
 
 // Set to true to as required
 var enableJsonObjectDebugMessages = false;
@@ -22,7 +26,7 @@ void _log(obj) {
  * it uses Dart's mirror system to return a real instance of 
  * the specified type.
  */
-class JsonObject extends Object implements Map, Iterable {
+class JsonObject<E> extends Object implements Map, Iterable {
   /// The original JSON string
   var _jsonString;
   
