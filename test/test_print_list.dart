@@ -5,9 +5,9 @@ part of json_object_test;
 
 void testPrintList() {
   MyList2 list = new MyList2.fromString('[{"x":161,"y":37},{"x":143,"y":177}]');
-  print(list[0]);
-  print(list.length);
-  print(list);
+  _log(list[0]);
+  _log(list.length);
+  _log(list);
 }
 
 class MyList2 extends JsonObject {

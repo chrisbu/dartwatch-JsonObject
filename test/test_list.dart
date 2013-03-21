@@ -9,7 +9,7 @@ testList() {
         {"Dis":2222.2,"Flag":0,"Obj":{"ID":2,"Title":"Volvo 240"}}]
         """;
     MyList list = new MyList.fromString(testJson);
-    print(list[0].Obj.Title);
+    _log(list[0].Obj.Title);
     expect(list[0].Obj.Title, equals("Volvo 140"));
   });
   

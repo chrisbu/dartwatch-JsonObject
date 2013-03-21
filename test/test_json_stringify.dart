@@ -1,7 +1,7 @@
 part of json_object_test;
 
 testJsonStringify() {
-  print("testJsonStringify");
+  _log("testJsonStringify");
   JsonObject person = new JsonObject();
   
   // dynamically created some properties

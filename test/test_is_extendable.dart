@@ -1,7 +1,7 @@
 part of json_object_test;
 
 testIsExtendable() {
-  print("testIsExtendable");
+  _log("testIsExtendable");
 
   JsonObject person = new JsonObject();
   //isExtendable is currently set to true, so

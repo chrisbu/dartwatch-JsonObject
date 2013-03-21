@@ -16,20 +16,22 @@ part "test_dartlang_article.dart";
 part "test_todo_vo.dart";
 part "test_print_list.dart";
 part "test_list_serialization.dart";
-// part "test_mirrors_serialize.dart";
+part "test_mirrors_serialize.dart";
 part "test_list.dart";
+
+void _log(obj) { 
+  if (enableJsonObjectDebugMessages) print(obj);
+}
 
 void main() { 
   enableJsonObjectDebugMessages = true;
   
   test('sample data', () {
-    print(1);
     testSampleData(); // passes build 14458
   });
 
   group('strong typing', () {
     test('new', () {
-      print(2);
       testStrongTyping_new(); // passes build 14458
     });
     
@@ -39,28 +41,23 @@ void main() {
   });
 
   test('json stringify', () {
-    print(3);
     testJsonStringify();  // passes build 8942
   });
 
   test('is extendable', () {
-    print(4);
     testIsExtendable(); // passes build 14458
   });
 
   test('extend object', () {
-    print(5);
     testExtendObject(); // passes build 14458
   });
 
   test('toString', () {
-    print(6);
     testToString(); // passes build 14458
   });
   
   group('dartlang article', () {
     test('fromJson', () {
-      print(7);
       testDartlangArticle_fromJson(); // passes build 14458
     });
     
@@ -71,12 +68,10 @@ void main() {
   });
   
    test('toTodoVO', () {
-    print(8);
     testTodoVO();     
   });
    
    test('list', () {
-     print(9);
      testList();
      testListIterator();
      testPrintList();
@@ -88,7 +83,7 @@ void main() {
       
    
 
-//   testMirrorsSerialize(); // tests converting a class to JSON
+   testMirrorsSerialize(); // tests converting a class to JSON
 }
 
 
