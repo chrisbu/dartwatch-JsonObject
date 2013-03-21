@@ -38,28 +38,28 @@ bool testSampleData() {
     var  o = new JsonObject.fromJsonString(jsonString);
     
     //basic access
-    Expect.stringEquals("Chris", o.name);
-    Expect.stringEquals("Dart", o.languages[0]);
-    Expect.stringEquals("Java", o.languages[1]);
+    expect("Chris", equals(o.name));
+    expect("Dart", equals(o.languages[0]));
+    expect("Java", equals(o.languages[1]));
     
     //maps within maps
-    Expect.stringEquals("+Chris Buckett", o.handles.googlePlus.name);
-    Expect.stringEquals("@ChrisDoesDev", o.handles.twitter.name);
+    expect("+Chris Buckett", equals(o.handles.googlePlus.name));
+    expect("@ChrisDoesDev", equals(o.handles.twitter.name));
     
     //maps within lists
-    Expect.stringEquals("Dartwatch", o.blogs[0].name);
-    Expect.stringEquals("http://dartwatch.com", o.blogs[0].url);
-    Expect.stringEquals("ChrisDoesDev",o.blogs[1].name);
-    Expect.stringEquals("http://chrisdoesdev.com", o.blogs[1].url);
+    expect("Dartwatch", equals(o.blogs[0].name));
+    expect("http://dartwatch.com", equals(o.blogs[0].url));
+    expect("ChrisDoesDev",equals(o.blogs[1].name));
+    expect("http://chrisdoesdev.com", equals(o.blogs[1].url));
     
     //maps within lists within maps 
-    Expect.stringEquals("Introduction to Dart", o.books[0].chapters[0].chapter1);
-    Expect.stringEquals("page1", o.books[0].chapters[0].pages[0]);
-    Expect.stringEquals("page2", o.books[0].chapters[0].pages[1]);
+    expect("Introduction to Dart", equals(o.books[0].chapters[0].chapter1));
+    expect("page1", equals(o.books[0].chapters[0].pages[0]));
+    expect("page2", equals(o.books[0].chapters[0].pages[1]));
     
     //try an update
     o.handles.googlePlus.name="+ChrisB";
-    Expect.stringEquals("+ChrisB",o.handles.googlePlus.name);
+    expect("+ChrisB",equals(o.handles.googlePlus.name));
     
     for (JsonObject o in o.books) {
       _log(o.chapters);  

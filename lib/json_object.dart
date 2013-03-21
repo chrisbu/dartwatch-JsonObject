@@ -10,6 +10,7 @@ library json_object;
 import "dart:json" as JSON;
 import "dart:async";
 import 'dart:mirrors' as mirrors;
+import 'package:meta/meta.dart';
 
 part "src/mirror_based_serializer.dart";
 
@@ -208,7 +209,7 @@ class JsonObject<E> extends Object implements Map, Iterable {
   }
   
   /***************************************************************************
-   * List implementation methods and properties *
+   * Iterable implementation methods and properties *
    */
   
   // pass through to the underlying iterator  
@@ -231,10 +232,6 @@ class JsonObject<E> extends Object implements Map, Iterable {
   
   bool any(bool f(E element)) => this.toIterable().any(f);
   
-  E min([int compare(E a, E b)]) => this.toIterable().min(compare);
-  
-  E max([int compare(E a, E b)]) => this.toIterable().max(compare);
-  
   Iterable<E> take(int n) => this.toIterable().take(n);
   
   Iterable<E> takeWhile(bool test(E value)) => this.toIterable().takeWhile(test);
@@ -250,20 +247,33 @@ class JsonObject<E> extends Object implements Map, Iterable {
   E get single => this.toIterable().single;
   
   E firstMatching(bool test(E value), { E orElse() }) {
-    if (?orElse) this.toIterable().firstMatching(test, orElse: orElse);
-    else this.toIterable().firstMatching(test);
+    if (?orElse) this.toIterable().firstWhere(test, orElse: orElse);
+    else this.toIterable().firstWhere(test);
   }
   
   E lastMatching(bool test(E value), {E orElse()}) {
-    if (?orElse) this.toIterable().lastMatching(test, orElse: orElse);
-    else this.toIterable().lastMatching(test);
+    if (?orElse) this.toIterable().lastWhere(test, orElse: orElse);
+    else this.toIterable().lastWhere(test);
   }
   
-  E singleMatching(bool test(E value)) => this.toIterable().singleMatching(test);
+  E singleMatching(bool test(E value)) => this.toIterable().singleWhere(test);
   
   E elementAt(int index) => this.toIterable().elementAt(index);
   
+  List<dynamic> toList({ bool growable: true }) => this.toIterable().toList(growable:growable);
+  
+  Set<dynamic> toSet() => this.toIterable().toSet();
+  
+  @deprecated
+  E min([int compare(E a, E b)]) { throw "Deprecated in iterable interface"; }
 
+  @deprecated
+  E max([int compare(E a, E b)]) { throw "Deprecated in iterable interface"; }
+  
+  dynamic firstWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse); 
+  dynamic lastWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
+  dynamic singleWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
+  
   /***************************************************************************
    * Map implementation methods and properties *
    * 
