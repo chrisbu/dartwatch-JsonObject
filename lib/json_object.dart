@@ -1,4 +1,4 @@
-/* (C) 2012 Chris Buckett (chrisbuckett@gmail.com)
+/* (C) 2013 Chris Buckett (chrisbuckett@gmail.com)
  * Released under the MIT licence
  * See LICENCE file
  * http://github.com/chrisbu/dartwatch-JsonObject

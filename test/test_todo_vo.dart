@@ -39,18 +39,18 @@ class _TodoVOImpl extends JsonObject implements TodoVO   {
   String toJson() {
 
     StringBuffer buffer = new StringBuffer();
-    buffer.add('{');
-    buffer.add('"id":"'); // add the missing "
-    buffer.add(id);
-    buffer.add('", '); // add the missing "
+    buffer.write('{');
+    buffer.write('"id":"'); // add the missing "
+    buffer.write(id);
+    buffer.write('", '); // add the missing "
 
-    buffer.add('"title":"');
-    buffer.add( title );
-    buffer.add('", ');
+    buffer.write('"title":"');
+    buffer.write( title );
+    buffer.write('", ');
 
-    buffer.add('"completed":');
-    buffer.add(completed.toString());
-    buffer.add('}');
+    buffer.write('"completed":');
+    buffer.write(completed.toString());
+    buffer.write('}');
 
     print(buffer.toString()); // add a print for debugging
     return buffer.toString();

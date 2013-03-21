@@ -49,15 +49,10 @@ Take a look at the unit tests to get an idea of how you can use it.
 
 ---- 
 
-## 2. Experimental :Using reflection to serialize from a real class instance to JSON
+## 2. Experimental Using reflection to serialize from a real class instance to JSON
 
 (Requires use of a the experimental `mirrors` branch)
 
-    dependencies:
-      json_object:
-        git:
-          url: git://github.com/chrisbu/dartwatch-JsonObject.git
-          ref: mirrors
 
 Use `objectToJson(myObj)` to return a future containing the serialized string.
 
