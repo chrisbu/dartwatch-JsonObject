@@ -10,29 +10,30 @@ library json_object;
 import "dart:json" as JSON;
 import "dart:async";
 import 'dart:mirrors' as mirrors;
+import 'dart:collection';
 import 'package:meta/meta.dart';
 
 part "src/mirror_based_serializer.dart";
 
 // Set to true to as required
 var enableJsonObjectDebugMessages = false;
-void _log(obj) { 
+void _log(obj) {
   if (enableJsonObjectDebugMessages) print(obj);
 }
 
 /** JsonObject allows .property name access to JSON by using
- * noSuchMethod.  
+ * noSuchMethod.
  *
- * When used with the generic type annotation, 
- * it uses Dart's mirror system to return a real instance of 
+ * When used with the generic type annotation,
+ * it uses Dart's mirror system to return a real instance of
  * the specified type.
  */
 class JsonObject<E> extends Object implements Map, Iterable {
   /// The original JSON string
   var _jsonString;
-  
+
   /// Contains either a [List] or [Map]
-  var _objectData; 
+  var _objectData;
 
   /**
    * Returns a [JSON.stringify] representation of the underlying object data
@@ -40,13 +41,13 @@ class JsonObject<E> extends Object implements Map, Iterable {
   toString() {
       return JSON.stringify(_objectData);
   }
-  
+
   /**
-   * Returns either the underlying parsed data as an iterable list (if the 
-   * underlying data contains a list), or returns the map.values (if the 
+   * Returns either the underlying parsed data as an iterable list (if the
+   * underlying data contains a list), or returns the map.values (if the
    * underlying data contains a map).
-   * 
-   * Returns an empty list if neither of the above is true. 
+   *
+   * Returns an empty list if neither of the above is true.
    */
   Iterable toIterable() {
     if (_objectData is Iterable) {
@@ -57,17 +58,17 @@ class JsonObject<E> extends Object implements Map, Iterable {
     }
     else {
       return new List(); // return an empty list, rather than return null
-      
+
     }
   }
 
   /** [isExtendable] decides if a new item can be added to the internal
    * map via the noSuchMethod property, or the functions inherited from the
    * map interface.
-   * 
+   *
    * If set to false, then only the properties that were
    * in the original map or json string passed in can be used.
-   * 
+   *
    * If set to true, then calling o.blah="123" will create a new blah property
    * if it didn't already exist.
    *
@@ -81,16 +82,16 @@ class JsonObject<E> extends Object implements Map, Iterable {
 
   /** default constructor.
    * creates a new empty map.
-   */ 
+   */
   JsonObject() {
     _objectData = new Map();
     isExtendable = true;
   }
-  
+
   /** eager constructor parses the jsonString using
    *  [JSON.parse()], and
    *  replaces all maps recursively with JsonObjects
-   */ 
+   */
   factory JsonObject.fromJsonString(String _jsonString, [JsonObject t]) {
     if (t == null) {
       t = new JsonObject();
@@ -112,7 +113,7 @@ class JsonObject<E> extends Object implements Map, Iterable {
     _extractElements(_objectData);
     isExtendable = false;
   }
-  
+
   static JsonObject toTypedJsonObject(JsonObject src, JsonObject dest) {
     dest._jsonString = src._jsonString;
     dest._objectData = src._objectData;
@@ -128,14 +129,14 @@ class JsonObject<E> extends Object implements Map, Iterable {
    * class.
    * If it finds the getter or setter then it either updates the value, or
    * replaces the value.
-   * 
+   *
    * If isExtendable = true, then it will allow the property access
    * even if the property doesn't yet exist.
    */
-  noSuchMethod(InvocationMirror mirror) {
+  noSuchMethod(Invocation mirror) {
     int positionalArgs = 0;
     if (mirror.positionalArguments != null) positionalArgs = mirror.positionalArguments.length;
-    
+
     if (mirror.isGetter && (positionalArgs == 0)) {
       //synthetic getter
       var property = mirror.memberName;
@@ -145,7 +146,7 @@ class JsonObject<E> extends Object implements Map, Iterable {
     }
     else if (mirror.isSetter && positionalArgs == 1) {
       //synthetic setter
-      var property = mirror.memberName.replaceAll("=", ""); 
+      var property = mirror.memberName.replaceAll("=", "");
       //if the property doesn't exist, it will only be added
       //if isExtendable = true
       this[property] = mirror.positionalArguments[0]; // args[0];
@@ -160,13 +161,13 @@ class JsonObject<E> extends Object implements Map, Iterable {
     super.noSuchMethod(mirror);
   }
 
-  /** 
+  /**
    * If the [data] object passed in is a MAP, then we iterate through each of
    * the values of the map, and if any value is a map, then we create a new
    * [JsonObject] replacing that map in the original data with that [JsonObject]
    * to a new [JsonObject].  If the value is a Collection, then we call this
    * function recursively.
-   * 
+   *
    * If the [data] object passed in is a Collection, then we iterate through
    * each item.  If that item is a map, then we replace the item with a
    * [JsonObject] created from the map.  If the item is a Collection, then we
@@ -191,11 +192,11 @@ class JsonObject<E> extends Object implements Map, Iterable {
     else if (data is List) {
       //iterate through each of the items
       //if any of them is a list, check to see if it contains a map
-      
+
       for (int i = 0; i < data.length; i++) {
         //use the for loop so that we can index the item to replace it if req'd
         var listItem = data[i];
-        if (listItem is Collection) {
+        if (listItem is List) {
           //recurse
           _extractElements(listItem);
         }
@@ -207,107 +208,107 @@ class JsonObject<E> extends Object implements Map, Iterable {
     }
 
   }
-  
+
   /***************************************************************************
    * Iterable implementation methods and properties *
    */
-  
-  // pass through to the underlying iterator  
+
+  // pass through to the underlying iterator
   Iterator<E> get iterator => this.toIterable().iterator;
-  
+
   Iterable map(f(E element)) => this.toIterable().map(f);
-  
+
   Iterable<E> where(bool f(E element)) => this.toIterable().where(f);
-  
+
   Iterable expand(Iterable f(E element)) => this.toIterable().expand(f);
-  
+
   bool contains(E element) => this.toIterable().contains(element);
-  
+
   dynamic reduce(var initialValue,
        dynamic combine(var previousValue, E element)) => this.toIterable().reduce(initialValue, combine);
-  
+
   bool every(bool f(E element)) => this.toIterable().every(f);
-  
+
   String join([String separator]) => this.toIterable().join(separator);
-  
+
   bool any(bool f(E element)) => this.toIterable().any(f);
-  
+
   Iterable<E> take(int n) => this.toIterable().take(n);
-  
+
   Iterable<E> takeWhile(bool test(E value)) => this.toIterable().takeWhile(test);
-  
+
   Iterable<E> skip(int n) => this.toIterable().skip(n);
-  
+
   Iterable<E> skipWhile(bool test(E value)) => this.toIterable().skipWhile(test);
-  
+
   E get first => this.toIterable().first;
-  
+
   E get last => this.toIterable().last;
-  
+
   E get single => this.toIterable().single;
-  
+
   E firstMatching(bool test(E value), { E orElse() }) {
     if (?orElse) this.toIterable().firstWhere(test, orElse: orElse);
     else this.toIterable().firstWhere(test);
   }
-  
+
   E lastMatching(bool test(E value), {E orElse()}) {
     if (?orElse) this.toIterable().lastWhere(test, orElse: orElse);
     else this.toIterable().lastWhere(test);
   }
-  
+
   E singleMatching(bool test(E value)) => this.toIterable().singleWhere(test);
-  
+
   E elementAt(int index) => this.toIterable().elementAt(index);
-  
+
   List<dynamic> toList({ bool growable: true }) => this.toIterable().toList(growable:growable);
-  
+
   Set<dynamic> toSet() => this.toIterable().toSet();
-  
+
   @deprecated
   E min([int compare(E a, E b)]) { throw "Deprecated in iterable interface"; }
 
   @deprecated
   E max([int compare(E a, E b)]) { throw "Deprecated in iterable interface"; }
-  
-  dynamic firstWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse); 
+
+  dynamic firstWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
   dynamic lastWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
   dynamic singleWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
-  
+
   /***************************************************************************
    * Map implementation methods and properties *
-   * 
+   *
    */
-  
+
   // Pass through to the inner _objectData map.
   bool containsValue(value) => _objectData.containsValue(value);
-  
+
   // Pass through to the inner _objectData map.
   bool containsKey(value) => _objectData.containsKey(value);
-  
+
   // Pass through to the inner _objectData map.
   operator [](key) => _objectData[key];
-  
+
   // Pass through to the inner _objectData map.
   forEach(func) => _objectData.forEach(func);
-  
+
   // Pass through to the inner _objectData map.
   Iterable get keys => _objectData.keys;
-  
+
   // Pass through to the inner _objectData map.
   Iterable get values => _objectData.values;
-  
+
   // Pass through to the inner _objectData map.
   int get length => _objectData.length;
-  
+
   // Pass through to the inner _objectData map.
   bool get isEmpty => _objectData.isEmpty;
 
-  /** 
+  /**
    * Specific implementations which check isExtendable to determine if an
    *
    * unknown key should be allowed
-   * 
+   *
    * If [isExtendable] is true, or the key already exists,
    * then allow the edit.
    * Throw [JsonObjectException] if we're not allowed to add a new
