@@ -1,5 +1,10 @@
 JsonObject for DART (http://www.dartlang.org)
 
+Version 0.5.0+1
+(Note, this is a change to the previous version.  It now makes sense to use 
+sematic versioning.  The prior version was 1.0.14.  Sorry if this causes 
+headaches - I'll buy you a beer (or soft drink) when I see you :)
+
 [![](https://drone.io/chrisbu/json_object/status.png)](https://drone.io/chrisbu/json_object/latest)
 
 Usage: Add to pubspec.yaml:
@@ -7,9 +12,11 @@ Usage: Add to pubspec.yaml:
     dependencies:
   	  json_object: any    
 
-Now *M3* compatible.
+Now *M4* compatible.
 
-All tests passing with build **17657**
+All tests passing with SDK **0.5.0+1.r21823**
+
+
 
 You can use JsonObject in two different ways.  
 
