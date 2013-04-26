@@ -137,24 +137,25 @@ class JsonObject<E> extends Object implements Map, Iterable {
     int positionalArgs = 0;
     if (mirror.positionalArguments != null) positionalArgs = mirror.positionalArguments.length;
 
+    var property = _symbolToString(mirror.memberName);
+
     if (mirror.isGetter && (positionalArgs == 0)) {
       //synthetic getter
-      var property = mirror.memberName;
       if (this.containsKey(property)) {
         return this[property];
       }
     }
     else if (mirror.isSetter && positionalArgs == 1) {
       //synthetic setter
-      var property = mirror.memberName.replaceAll("=", "");
       //if the property doesn't exist, it will only be added
       //if isExtendable = true
+      property = property.replaceAll("=", "");
       this[property] = mirror.positionalArguments[0]; // args[0];
       return this[property];
     }
 
     //if we get here, then we've not found it - throw.
-    _log("Not found: ${mirror.memberName}");
+    _log("Not found: ${property}");
     _log("IsGetter: ${mirror.isGetter}");
     _log("IsSetter: ${mirror.isGetter}");
     _log("isAccessor: ${mirror.isAccessor}");
@@ -207,6 +208,15 @@ class JsonObject<E> extends Object implements Map, Iterable {
       }
     }
 
+  }
+
+  String _symbolToString(value) {
+    if (value is Symbol) {
+      return mirrors.MirrorSystem.getName(value);
+    }
+    else {
+      return value.toString();
+    }
   }
 
   /***************************************************************************
@@ -284,7 +294,9 @@ class JsonObject<E> extends Object implements Map, Iterable {
   bool containsValue(value) => _objectData.containsValue(value);
 
   // Pass through to the inner _objectData map.
-  bool containsKey(value) => _objectData.containsKey(value);
+  bool containsKey(value) {
+    return _objectData.containsKey(_symbolToString(value));
+  }
 
   // Pass through to the inner _objectData map.
   operator [](key) => _objectData[key];
