@@ -1,9 +1,7 @@
 JsonObject for DART (http://www.dartlang.org)
 
-Version 0.5.0+1
-(Note, this is a change to the previous version.  It now makes sense to use 
-sematic versioning.  The prior version was 1.0.14.  Sorry if this causes 
-headaches - I'll buy you a beer (or soft drink) when I see you :)
+Version 1.0.15+1
+
 
 [![](https://drone.io/chrisbu/json_object/status.png)](https://drone.io/chrisbu/json_object/latest)
 
