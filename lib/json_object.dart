@@ -28,7 +28,7 @@ void _log(obj) {
  * it uses Dart's mirror system to return a real instance of
  * the specified type.
  */
-class JsonObject<E> extends Object implements Map, Iterable {
+class JsonObject<E> extends Object implements Map, Iterable  {
   /// The original JSON string
   var _jsonString;
 
@@ -234,8 +234,7 @@ class JsonObject<E> extends Object implements Map, Iterable {
 
   bool contains(E element) => this.toIterable().contains(element);
 
-  dynamic reduce(var initialValue,
-       dynamic combine(var previousValue, E element)) => this.toIterable().reduce(initialValue, combine);
+  dynamic reduce(E combine(E value, E element)) => this.toIterable().reduce(combine);
 
   bool every(bool f(E element)) => this.toIterable().every(f);
 
@@ -256,17 +255,22 @@ class JsonObject<E> extends Object implements Map, Iterable {
   E get last => this.toIterable().last;
 
   E get single => this.toIterable().single;
+  
+  E fold(initialValue, dynamic combine(a,b)) => this.toIterable().fold(initialValue, combine);
 
+  @deprecated
   E firstMatching(bool test(E value), { E orElse() }) {
     if (?orElse) this.toIterable().firstWhere(test, orElse: orElse);
     else this.toIterable().firstWhere(test);
   }
 
+  @deprecated
   E lastMatching(bool test(E value), {E orElse()}) {
     if (?orElse) this.toIterable().lastWhere(test, orElse: orElse);
     else this.toIterable().lastWhere(test);
   }
 
+  @deprecated
   E singleMatching(bool test(E value)) => this.toIterable().singleWhere(test);
 
   E elementAt(int index) => this.toIterable().elementAt(index);
@@ -284,7 +288,7 @@ class JsonObject<E> extends Object implements Map, Iterable {
   dynamic firstWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
   dynamic lastWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
   dynamic singleWhere(test, {orElse}) => this.toIterable().firstWhere(test, orElse:orElse);
-
+//
   /***************************************************************************
    * Map implementation methods and properties *
    *
@@ -297,6 +301,9 @@ class JsonObject<E> extends Object implements Map, Iterable {
   bool containsKey(value) {
     return _objectData.containsKey(_symbolToString(value));
   }
+  
+  // Pass through to the innter _objectData map.
+  bool get isNotEmpty => _objectData.isNotEmpty;
 
   // Pass through to the inner _objectData map.
   operator [](key) => _objectData[key];
@@ -315,6 +322,9 @@ class JsonObject<E> extends Object implements Map, Iterable {
 
   // Pass through to the inner _objectData map.
   bool get isEmpty => _objectData.isEmpty;
+
+  // Pass through to the inner _objectData map.
+  addAll(items) => _objectData.addAll(items);
 
   /**
    * Specific implementations which check isExtendable to determine if an
@@ -375,7 +385,7 @@ class JsonObject<E> extends Object implements Map, Iterable {
     else {
       throw new JsonObjectException("JsonObject is not extendable");
     }
-  }
+  }  
 }
 
 /**

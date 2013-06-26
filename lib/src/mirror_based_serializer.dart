@@ -12,7 +12,7 @@ Future<String> objectToJson(Object object) {
     completer.complete(string);
   };
 
-  var onError = (AsyncError error) {
+  var onError = (error) {
     _log("JsonObject Future Error: $object");
     _log("Object: ${object.runtimeType}");
     _log("Stringified: ${JSON.stringify(object)}");
