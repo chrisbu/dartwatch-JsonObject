@@ -1,6 +1,6 @@
 JsonObject for DART (http://www.dartlang.org)
 
-Version 1.0.15+3
+Version 1.0.16
 
 
 [![](https://drone.io/chrisbu/json_object/status.png)](https://drone.io/chrisbu/json_object/latest)
@@ -10,9 +10,9 @@ Usage: Add to pubspec.yaml:
     dependencies:
   	  json_object: any    
 
-Now *M5* (Dart Beta) compatible.
+Now *M6* (Dart Beta) compatible.
 
-All tests passing with SDK **0.5.20_r24275**
+All tests passing with SDK **0.6.3_r24898**
 
 
 
