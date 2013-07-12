@@ -259,14 +259,14 @@ class JsonObject<E> extends Object implements Map, Iterable  {
   E fold(initialValue, dynamic combine(a,b)) => this.toIterable().fold(initialValue, combine);
 
   @deprecated
-  E firstMatching(bool test(E value), { E orElse() }) {
-    if (?orElse) this.toIterable().firstWhere(test, orElse: orElse);
+  E firstMatching(bool test(E value), { E orElse() : null }) {
+    if (orElse != null) this.toIterable().firstWhere(test, orElse: orElse);
     else this.toIterable().firstWhere(test);
   }
 
   @deprecated
-  E lastMatching(bool test(E value), {E orElse()}) {
-    if (?orElse) this.toIterable().lastWhere(test, orElse: orElse);
+  E lastMatching(bool test(E value), {E orElse() : null}) {
+    if (orElse != null) this.toIterable().lastWhere(test, orElse: orElse);
     else this.toIterable().lastWhere(test);
   }
 
