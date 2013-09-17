@@ -7,10 +7,9 @@
 
 library json_object;
 
-import "dart:json" as JSON;
+import "dart:convert";
 import "dart:async";
 import 'dart:mirrors' as mirrors;
-import 'dart:collection';
 import 'package:meta/meta.dart';
 
 part "src/mirror_based_serializer.dart";
@@ -28,18 +27,22 @@ void _log(obj) {
  * it uses Dart's mirror system to return a real instance of
  * the specified type.
  */
+@proxy
 class JsonObject<E> extends Object implements Map, Iterable  {
   /// The original JSON string
   var _jsonString;
 
   /// Contains either a [List] or [Map]
   var _objectData;
+  
+  static JsonEncoder encoder = new JsonEncoder();
+  static JsonDecoder decoder = new JsonDecoder(null);
 
   /**
-   * Returns a [JSON.stringify] representation of the underlying object data
+   * Returns a [JSON.decode] representation of the underlying object data
    */
   toString() {
-      return JSON.stringify(_objectData);
+      return encoder.convert(_objectData);
   }
 
   /**
@@ -89,7 +92,7 @@ class JsonObject<E> extends Object implements Map, Iterable  {
   }
 
   /** eager constructor parses the jsonString using
-   *  [JSON.parse()], and
+   *  [decode()], and
    *  replaces all maps recursively with JsonObjects
    */
   factory JsonObject.fromJsonString(String _jsonString, [JsonObject t]) {
@@ -97,7 +100,7 @@ class JsonObject<E> extends Object implements Map, Iterable  {
       t = new JsonObject();
     }
     t._jsonString = _jsonString;
-    t._objectData = JSON.parse(t._jsonString);
+    t._objectData = decoder.convert(t._jsonString);
     t._extractElements(t._objectData);
     t.isExtendable = false;
     return t;
@@ -108,7 +111,7 @@ class JsonObject<E> extends Object implements Map, Iterable  {
    * rather than a json string.
    */
   JsonObject.fromMap(Map map) {
-    _jsonString = JSON.stringify(map);
+    _jsonString = encoder.convert(map);
     _objectData = map;
     _extractElements(_objectData);
     isExtendable = false;

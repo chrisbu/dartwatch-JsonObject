@@ -1,5 +1,6 @@
 part of json_object_test;
 
+@proxy
 class LanguageWebsite extends JsonObject  {
   LanguageWebsite();  // default constructor (empty) implementation
 
@@ -16,6 +17,7 @@ class LanguageWebsite extends JsonObject  {
   }
 }
 
+@proxy
 class Language extends JsonObject {
   Language(); // empty, default constructor
 

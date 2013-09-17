@@ -19,10 +19,10 @@ testJsonStringify() {
   person.address = address;
   
   // convert to a json string:
-  String json = JSON.stringify(person);
+  String json = new JsonEncoder().convert(person);
   // convert back to a json map - the JSON stringifg changes periodically,
   // breaking this test
-  Map convertedBack = JSON.parse(json);
+  Map convertedBack = new JsonDecoder(null).convert(json);
   
   // assert
   expect(convertedBack["address"]["line1"], equals(address.line1));

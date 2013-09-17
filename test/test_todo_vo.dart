@@ -1,5 +1,6 @@
 part of json_object_test;
 
+@proxy
 abstract class TodoVO {
 
   // Instance members
@@ -22,6 +23,7 @@ abstract class TodoVO {
   String toJson();
 }
 
+@proxy
 class _TodoVOImpl extends JsonObject implements TodoVO   {
   // Instance members not required - they are implemented by noSuchMethod
   //String id = '';

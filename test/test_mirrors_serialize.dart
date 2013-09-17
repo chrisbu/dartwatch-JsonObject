@@ -675,7 +675,7 @@ class JsonMapMatcher implements Matcher {
 
   // JSON parse the item back into a map, and compare the two maps
   // (brute force, innefficient)
-  bool matches(String item, MatchState matchState) {
+  bool matches(String item, matchState) {
     var result = true;
     _log("matcher before JSON: $item");
     _log("matcher after JSON:  $item");
@@ -698,7 +698,7 @@ class JsonMapMatcher implements Matcher {
   }
   
   Description describeMismatch(item, Description mismatchDescription,
-                               MatchState matchState, bool verbose) {
+                               matchState, bool verbose) {
     mismatchDescription.add("item: ${item.toString()}");
     return mismatchDescription;
     

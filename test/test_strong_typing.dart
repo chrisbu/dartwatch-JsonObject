@@ -1,5 +1,6 @@
 part of json_object_test;
 
+@proxy
 class Person extends JsonObject {
   // need a default, private constructor
   Person();
