@@ -41,15 +41,15 @@ Examples:
                           
     person.isExtendable = true;
     person.namz = "Bob" //this is allowed now
-    String jsonString = JSON.stringify(person); // convert back to JSON
+    String jsonString = JSON.encode(person); // convert back to JSON
 
-It implements Map, so you can convert it back to Json using JSON.stringify():
+It implements Map, so you can convert it back to Json using JSON.encode():
     
     // starting from an empty map
     var animal = new JsonObject();  
     animal.legs = 4;  // equivalent to animal["legs"] = 4;
     animal.name = "Fido"; // equivalent to animal["name"] = "Fido";
-    String jsonString = JSON.stringify(animal); // convert to JSON
+    String jsonString = JSON.encode(animal); // convert to JSON
     
 
 Take a look at the unit tests to get an idea of how you can use it.

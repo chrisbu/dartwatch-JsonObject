@@ -1,3 +1,7 @@
+1.0.18+2 07/11/2013
+
+Doc fixes.
+
 1.0.18 07/11/2013
 
 Changed stringify to encode
