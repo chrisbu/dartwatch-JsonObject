@@ -1,3 +1,9 @@
+1.0.18 07/11/2013
+
+Changed stringify to encode
+Removed meta package requirement
+All tests passing with 0.8.10.3_r29803
+
 1.0.17 17/Sept/2013
 
 Added @proxy
