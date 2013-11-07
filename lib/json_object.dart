@@ -10,7 +10,7 @@ library json_object;
 import "dart:convert";
 import "dart:async";
 import 'dart:mirrors' as mirrors;
-import 'package:meta/meta.dart';
+// import 'package:meta/meta.dart';
 
 part "src/mirror_based_serializer.dart";
 

@@ -5,7 +5,7 @@ import "package:unittest/unittest.dart";
 import "../lib/json_object.dart";
 
 import "dart:convert";
-import 'package:meta/meta.dart';
+//import 'package:meta/meta.dart';
 
 part "test_strong_typing.dart";
 part "test_sample_data.dart";

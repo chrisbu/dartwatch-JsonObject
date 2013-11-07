@@ -8,14 +8,14 @@ Future<String> objectToJson(Object object) {
   
   var onSuccess = (value) {
     _log("About to stringify: $value");
-    var string = JSON.stringify(value);
+    var string = JSON.encode(value);
     completer.complete(string);
   };
 
   var onError = (error) {
     _log("JsonObject Future Error: $object");
     _log("Object: ${object.runtimeType}");
-    _log("Stringified: ${JSON.stringify(object)}");
+    _log("Stringified: ${JSON.encode(object)}");
     completer.completeError(error, error.stackTrace);
   };
   

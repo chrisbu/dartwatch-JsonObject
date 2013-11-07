@@ -187,46 +187,46 @@ testMirrorsSerialize() {
      */
     
     group('native', () {
-      // "native" types should be parsed in exactly the same way as JSON.stringify/
+      // "native" types should be parsed in exactly the same way as JSON.encode/
       test('string', () {
         var val = "String";
         var future = objectToJson(val);
         future.catchError((error) => registerException(error));
-        expect(future, completion(JSON.stringify(val)));        
+        expect(future, completion(JSON.encode(val)));        
       });
       
       test('bool', () {
         var val = true;
         var future = objectToJson(val);
         future.catchError((error) => registerException(error));
-        expect(future, completion(JSON.stringify(val)));        
+        expect(future, completion(JSON.encode(val)));        
       });
       
       test('num', () {
         var val = 123;
         var future = objectToJson(val);
         future.catchError((error) => registerException(error));
-        expect(future, completion(JSON.stringify(val)));        
+        expect(future, completion(JSON.encode(val)));        
       });
       
       test('double', () {
         var val = 123.45;
         var future = objectToJson(val);
         future.catchError((error) => registerException(error));
-        expect(future, completion(JSON.stringify(val)));        
+        expect(future, completion(JSON.encode(val)));        
       });
       
       test('null', () {
         var val = null;
         var future = objectToJson(val);
         future.catchError((error) => registerException(error));
-        expect(future, completion(JSON.stringify(val)));        
+        expect(future, completion(JSON.encode(val)));        
       });
       
     });
     
     group('listOfNative', () {
-      // "native types should be parsed in exactly the same way as JSON.stringify/
+      // "native types should be parsed in exactly the same way as JSON.encode/
       test('string', () {
         var val = ["String","String2"];
         var future = objectToJson(val);
@@ -279,7 +279,7 @@ testMirrorsSerialize() {
     });
     
     group('mapOfNative', () {
-      // "native types should be parsed in exactly the same way as JSON.stringify/
+      // "native types should be parsed in exactly the same way as JSON.encode/
       test('string', () {
         var val = {"key1":"string1","key2":"string2"};
         var future = objectToJson(val);

@@ -1,11 +1,9 @@
 name: json_object
-version: 1.0.16
+version: 1.0.18
 author: Chris Buckett <chrisbuckett@gmail.com>
 description: Allow use of JSON Maps in dot notation format
 homepage: https://github.com/chrisbu/dartwatch-JsonObject
 environment:
   sdk: '>=0.6.0+1.r24898'
-dependencies:
-  meta: '>=0.6.0+1 <0.7.0'
 dev_dependencies:
-  unittest: '>=0.6.0+1 <0.7.0'
+  unittest: '>=0.6.0+1'
