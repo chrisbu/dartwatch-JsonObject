@@ -71,11 +71,19 @@ void main() {
    test('toTodoVO', () {
     testTodoVO();
   });
-
-   test('list', () {
-     testList();
-     testListIterator();
-     testPrintList();
+  
+   group('list', () {
+     test('list orig', () {
+          testList();
+     });
+     
+     test('list iterator', (){
+       testListIterator();
+     });
+     
+     test('list print', () {
+       testPrintList();
+     });
    });
 
    test('list seralization', () {
