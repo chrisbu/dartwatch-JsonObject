@@ -263,14 +263,14 @@ class JsonObject<E> extends Object implements Map, Iterable  {
 
   @deprecated
   E firstMatching(bool test(E value), { E orElse() : null }) {
-    if (orElse != null) this.toIterable().firstWhere(test, orElse: orElse);
-    else this.toIterable().firstWhere(test);
+    if (orElse != null) return this.toIterable().firstWhere(test, orElse: orElse);
+    else return this.toIterable().firstWhere(test);
   }
 
   @deprecated
   E lastMatching(bool test(E value), {E orElse() : null}) {
-    if (orElse != null) this.toIterable().lastWhere(test, orElse: orElse);
-    else this.toIterable().lastWhere(test);
+    if (orElse != null) return this.toIterable().lastWhere(test, orElse: orElse);
+    else return this.toIterable().lastWhere(test);
   }
 
   @deprecated
