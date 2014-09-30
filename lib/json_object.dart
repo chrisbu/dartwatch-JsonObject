@@ -29,9 +29,6 @@ void _log(obj) {
  */
 @proxy
 class JsonObject<E> extends Object implements Map, Iterable  {
-  /// The original JSON string
-  var _jsonString;
-
   /// Contains either a [List] or [Map]
   var _objectData;
   
@@ -99,8 +96,7 @@ class JsonObject<E> extends Object implements Map, Iterable  {
     if (t == null) {
       t = new JsonObject();
     }
-    t._jsonString = _jsonString;
-    t._objectData = decoder.convert(t._jsonString);
+    t._objectData = decoder.convert(_jsonString);
     t._extractElements(t._objectData);
     t.isExtendable = false;
     return t;
@@ -111,14 +107,12 @@ class JsonObject<E> extends Object implements Map, Iterable  {
    * rather than a json string.
    */
   JsonObject.fromMap(Map map) {
-    _jsonString = encoder.convert(map);
     _objectData = map;
     _extractElements(_objectData);
     isExtendable = false;
   }
 
   static JsonObject toTypedJsonObject(JsonObject src, JsonObject dest) {
-    dest._jsonString = src._jsonString;
     dest._objectData = src._objectData;
     dest.isExtendable = false;
     return dest;
