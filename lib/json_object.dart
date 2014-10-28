@@ -105,10 +105,14 @@ class JsonObject<E> extends Object implements Map, Iterable  {
 
   /** An alternate constructor, allows creating directly from a map
    * rather than a json string.
+   *
+   * If [recursive] is true, all values of the map will be converted
+   * to [JsonObject]s as well. The default value is [true].
    */
-  JsonObject.fromMap(Map map) {
+  JsonObject.fromMap(Map map, [bool recursive = true]) {
     _objectData = map;
-    _extractElements(_objectData);
+    if(recursive)
+      _extractElements(_objectData);
     isExtendable = false;
   }
 
