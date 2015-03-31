@@ -29,9 +29,6 @@ void _log(obj) {
  */
 @proxy
 class JsonObject<E> extends Object implements Map, Iterable  {
-  /// The original JSON string
-  var _jsonString;
-
   /// Contains either a [List] or [Map]
   var _objectData;
   
@@ -99,8 +96,7 @@ class JsonObject<E> extends Object implements Map, Iterable  {
     if (t == null) {
       t = new JsonObject();
     }
-    t._jsonString = _jsonString;
-    t._objectData = decoder.convert(t._jsonString);
+    t._objectData = decoder.convert(_jsonString);
     t._extractElements(t._objectData);
     t.isExtendable = false;
     return t;
@@ -109,16 +105,18 @@ class JsonObject<E> extends Object implements Map, Iterable  {
 
   /** An alternate constructor, allows creating directly from a map
    * rather than a json string.
+   *
+   * If [recursive] is true, all values of the map will be converted
+   * to [JsonObject]s as well. The default value is [true].
    */
-  JsonObject.fromMap(Map map) {
-    _jsonString = encoder.convert(map);
+  JsonObject.fromMap(Map map, [bool recursive = true]) {
     _objectData = map;
-    _extractElements(_objectData);
+    if(recursive)
+      _extractElements(_objectData);
     isExtendable = false;
   }
 
   static JsonObject toTypedJsonObject(JsonObject src, JsonObject dest) {
-    dest._jsonString = src._jsonString;
     dest._objectData = src._objectData;
     dest.isExtendable = false;
     return dest;
@@ -263,14 +261,14 @@ class JsonObject<E> extends Object implements Map, Iterable  {
 
   @deprecated
   E firstMatching(bool test(E value), { E orElse() : null }) {
-    if (orElse != null) this.toIterable().firstWhere(test, orElse: orElse);
-    else this.toIterable().firstWhere(test);
+    if (orElse != null) return this.toIterable().firstWhere(test, orElse: orElse);
+    else return this.toIterable().firstWhere(test);
   }
 
   @deprecated
   E lastMatching(bool test(E value), {E orElse() : null}) {
-    if (orElse != null) this.toIterable().lastWhere(test, orElse: orElse);
-    else this.toIterable().lastWhere(test);
+    if (orElse != null) return this.toIterable().lastWhere(test, orElse: orElse);
+    else return this.toIterable().lastWhere(test);
   }
 
   @deprecated
