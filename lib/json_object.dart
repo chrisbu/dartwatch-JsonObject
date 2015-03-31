@@ -88,19 +88,24 @@ class JsonObject<E> extends Object implements Map, Iterable  {
     isExtendable = true;
   }
 
-  /** eager constructor parses the jsonString using
-   *  [decode()], and
-   *  replaces all maps recursively with JsonObjects
+  /**
+   * Eager constructor parses [jsonString] using [JsonDecoder].
+   *
+   * If [t] is given, will replace [t]'s contents from the string and return [t].
+   *
+   *  If [recursive] is true, replaces all maps recursively with JsonObjects.
+   *  The default value is [true].
    */
-  factory JsonObject.fromJsonString(String _jsonString, [JsonObject t]) {
+  factory JsonObject.fromJsonString(String jsonString, [JsonObject t, bool recursive = true]) {
     if (t == null) {
       t = new JsonObject();
     }
-    t._objectData = decoder.convert(_jsonString);
-    t._extractElements(t._objectData);
+    t._objectData = decoder.convert(jsonString);
+    if(recursive) {
+      t._extractElements(t._objectData);
+    }
     t.isExtendable = false;
     return t;
-
   }
 
   /** An alternate constructor, allows creating directly from a map
@@ -111,8 +116,9 @@ class JsonObject<E> extends Object implements Map, Iterable  {
    */
   JsonObject.fromMap(Map map, [bool recursive = true]) {
     _objectData = map;
-    if(recursive)
+    if(recursive) {
       _extractElements(_objectData);
+    }
     isExtendable = false;
   }
 
