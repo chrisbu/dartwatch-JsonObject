@@ -245,7 +245,7 @@ class JsonObject<E> extends Object implements Map, Iterable  {
 
   bool every(bool f(E element)) => this.toIterable().every(f);
 
-  String join([String separator]) => this.toIterable().join(separator);
+  String join([String separator = ""]) => this.toIterable().join(separator);
 
   bool any(bool f(E element)) => this.toIterable().any(f);
 
