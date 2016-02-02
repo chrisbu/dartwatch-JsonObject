@@ -1,6 +1,6 @@
 JsonObject for DART (http://www.dartlang.org)
 
-Version 1.0.18
+Version 1.0.19
 
 
 [![](https://drone.io/chrisbu/json_object/status.png)](https://drone.io/chrisbu/json_object/latest)
